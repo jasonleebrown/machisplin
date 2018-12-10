@@ -2,9 +2,9 @@
 #' 
 #' @docType data
 #' 
-#' @usage data(sampling)
+#' @usage data(to.interp)
 #' 
-#' @format An data frame with 813 rows and 4 variables (oordinates named exactly as 'long' and 'lat') and two layers to downscale:
+#' @format An data frame with 813 rows and 4 variables (coordinates named exactly as 'long' and 'lat') and two layers to downscale:
 #' \describe{
 #'   \item{long}{longitude}#long,lat,bio_1,bio_12
 #'   \item{lat}{latittude}
@@ -16,22 +16,23 @@
 #' 
 #' @examples
 #' 
-#' library(machisplin)
+#' library(MACHISPLIN)
 #' library(raster)
 #' 
 #' ##load spatial data with (coordinates named exactly as 'long' and 'lat') and any number of layers to downscale
 #' data(sampling)
+#' Mydata<-sampling
 #' 
-#' ## load environmental variables for all sites of the study area 2 (env2). Column names should be x,y,X1,X2,...,Xn)
+#' ## load high-resolution covariates rasters
 #' 
-#' ALT = raster(system.file("extdata", "alt.tif", package="machisplin"))
+#' ALT = raster(system.file("extdata", "alt.tif", package="MACHISPLIN"))
 #' 
-#' SLOPE = raster(system.file("extdata", "slope.tif", package="machisplin"))
+#' SLOPE = raster(system.file("extdata", "slope.tif", package="MACHISPLIN"))
 #' 
-#' TWI = raster(system.file("extdata", "TWI.tif", package="machisplin"))
+#' TWI = raster(system.file("extdata", "TWI.tif", package="MACHISPLIN"))
 #' 
 #' ##function input: raster stack of covariates
 #' raster_stack<-stack(ALT,SLOPE,TWI)
 
-"sampling"
+"example.dat"
 

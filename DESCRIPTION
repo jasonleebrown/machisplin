@@ -8,4 +8,4 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: false
 RoxygenNote: 6.1.0
-Imports: raster, gstat, maptools, sp, rgdal, spdep, nlme, MASS, fields, snowfall, dismo, randomForest, earth, kernlab, mgcv
+Imports: raster, gstat, maptools, sp, rgdal, spdep, nlme, MASS, fields, snowfall, snow, dismo, randomForest, earth, kernlab, mgcv

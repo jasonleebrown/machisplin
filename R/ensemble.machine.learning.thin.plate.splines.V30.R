@@ -9,7 +9,7 @@
 #' @param covar.ras= a raster or raster stack of high-resolution raster layers at resolution and extent of downscaling.  These layers will be used as co-variates and careful consideration should be given properly selecting these.  
 #' @param ncores number of CPUs to use for interpolating - each core will be assigned a layer to interpolate. Best to first try with a few cores- this process can require a lot of memory
 #' @param tps if tps=TRUE then the residuals of the best model will be interpolated using a thin-plate-spline and the final downscaled layer will be adjusted by this layer (this is what ANUSPLIN does)
-#' @return  This script interpolates noisy multi-variate data through machine learning ensembling using six algorithms: boosted regression trees (BRT), linear models; generalized additive model, multivariate adaptive regression splines (MARS), support vector machines (SVM) and random forests. This function evaluates (via k-fold cross validation, where k=10) a method’s ability to predict the input data and ensembles of all combinations of the six algorithms.  The best model will have the lowest AICc (with the number of parameters in AICc calculation corresponding the number of models in ensemble).  After the best model is determined, the function will run ensemble on the full dataset.  Then residuals will be calculated and interpolated using thin-plate-smoothing splines, which will secondarily correct the final ensemble model. This package is a free open-source machine learning analog to the expensive ANUSPLIN software. To output final R2 values, algorithm(s) used, and rasters for use in GIS; use the 'machisplin.write.geotiff' function
+#' @return  This script interpolates noisy multi-variate data through machine learning ensembling using six algorithms: boosted regression trees (BRT), neural networks (NN); generalized additive model (GAM), multivariate adaptive regression splines (MARS), support vector machines (SVM) and random forests (RF). This function evaluates (via k-fold cross validation, where k=10) a method’s ability to predict the input data and ensembles of all combinations of the six algorithms weighting each from 0-1 and evaluting fit.  The best model will have the lowest AICc (with the number of parameters in AICc calculation corresponding the number of models in ensemble).  After the best model is determined, the function will run the ensemble on the full dataset.  Then residuals will be calculated and interpolated using thin-plate-smoothing splines, which will secondarily correct the final ensemble model. This package is a free open-source machine learning analog to the expensive ANUSPLIN software. To output final R2 values, model weights, algorithm(s) used, and rasters for use in GIS; use the 'machisplin.write.geotiff' function.  To output residuals use 'machisplin.write.residuals' and to output model loadings use 'machispline.write.loadings'.
 #' @export
 #' @import raster
 #' @import dismo
@@ -44,10 +44,21 @@
 #' 
 #' # function input: raster brick of covarites
 #' raster_stack<-stack(ALT,SLOPE,TWI,ASPECT)
-
 #' 
 #' #run an ensemble machine learning thin plate spline 
-#' interp.rast<-machisplin.mltps(int.values=Mydata, covar.ras=raster_stack, n.cores=2)
+#' interp.rast<-machisplin.mltps(int.values=Mydata, covar.ras=raster_stack, n.cores=2, tps=FALSE)
+#' 
+#' #to plot results (change number to select different output raster)
+#' plot(interp.rast[[1]]$final)
+#' 
+#' #to view residuals (change number to select different output raster)
+#' interp.rast[[1]]$residuals
+#' 
+#' #to view model loadings
+#' interp.rast[[1]]$var.imp
+#' 
+#' #to view other model parameters and other parameters
+#' interp.rast[[1]]$summary
 #' 
 #' ######## EXAMPLE 2 ########
 #' library(MACHISPLIN)
@@ -818,7 +829,7 @@ machisplin.write.geotiff<-function(mltps.in, out.names= NULL, overwrite=TRUE){
 #' #run an ensemble machine learning thin plate spline 
 #' interp.rast<-machisplin.mltps(int.values=Mydata, covar.ras=raster_stack, n.cores=2)
 #' 
-#' machisplin.write.geotiff(mltps.in=interp.rast)
+#' machisplin.write.loadings(mltps.in=interp.rast)
 machisplin.write.loadings<-function(mltps.in, out.names= NULL){
 	n.spln<-mltps.in[[1]]$n.layers
 	for (i in 1:n.spln){
@@ -854,7 +865,7 @@ machisplin.write.loadings<-function(mltps.in, out.names= NULL){
 #' #run an ensemble machine learning thin plate spline 
 #' interp.rast<-machisplin.mltps(int.values=Mydata, covar.ras=raster_stack, n.cores=2)
 #' 
-#' machisplin.write.geotiff(mltps.in=interp.rast)
+#' machisplin.write.residuals(mltps.in=interp.rast)
 
 machisplin.write.residuals<-function(mltps.in, out.names= NULL){
 	n.spln<-mltps.in[[1]]$n.layers

@@ -17,7 +17,7 @@ machisplin.mltps(int.values, covar.ras, n.cores = 1, tps = TRUE)
 \item{ncores}{number of CPUs to use for interpolating - each core will be assigned a layer to interpolate. Best to first try with a few cores- this process can require a lot of memory}
 }
 \value{
-This script interpolates noisy multi-variate data through machine learning ensembling using six algorithms: boosted regression trees (BRT), linear models; generalized additive model, multivariate adaptive regression splines (MARS), support vector machines (SVM) and random forests. This function evaluates (via k-fold cross validation, where k=10) a method’s ability to predict the input data and ensembles of all combinations of the six algorithms.  The best model will have the lowest AICc (with the number of parameters in AICc calculation corresponding the number of models in ensemble).  After the best model is determined, the function will run ensemble on the full dataset.  Then residuals will be calculated and interpolated using thin-plate-smoothing splines, which will secondarily correct the final ensemble model. This package is a free open-source machine learning analog to the expensive ANUSPLIN software. To output final R2 values, algorithm(s) used, and rasters for use in GIS; use the 'machisplin.write.geotiff' function
+This script interpolates noisy multi-variate data through machine learning ensembling using six algorithms: boosted regression trees (BRT), neural networks (NN); generalized additive model (GAM), multivariate adaptive regression splines (MARS), support vector machines (SVM) and random forests (RF). This function evaluates (via k-fold cross validation, where k=10) a method’s ability to predict the input data and ensembles of all combinations of the six algorithms weighting each from 0-1 and evaluting fit.  The best model will have the lowest AICc (with the number of parameters in AICc calculation corresponding the number of models in ensemble).  After the best model is determined, the function will run the ensemble on the full dataset.  Then residuals will be calculated and interpolated using thin-plate-smoothing splines, which will secondarily correct the final ensemble model. This package is a free open-source machine learning analog to the expensive ANUSPLIN software. To output final R2 values, model weights, algorithm(s) used, and rasters for use in GIS; use the 'machisplin.write.geotiff' function.  To output residuals use 'machisplin.write.residuals' and to output model loadings use 'machispline.write.loadings'.
 }
 \description{
 Machine Learning Ensemble & Thin-Plate-Spline Interpolation
@@ -39,7 +39,19 @@ TWI = raster("TWI.tif")
 raster_stack<-stack(ALT,SLOPE,TWI,ASPECT)
 
 #run an ensemble machine learning thin plate spline 
-interp.rast<-machisplin.mltps(int.values=Mydata, covar.ras=raster_stack, n.cores=2)
+interp.rast<-machisplin.mltps(int.values=Mydata, covar.ras=raster_stack, n.cores=2, tps=FALSE)
+
+#to plot results (change number to select different output raster)
+plot(interp.rast[[1]]$final)
+
+#to view residuals (change number to select different output raster)
+interp.rast[[1]]$residuals
+
+#to view model loadings
+interp.rast[[1]]$var.imp
+
+#to view other model parameters and other parameters
+interp.rast[[1]]$summary
 
 ######## EXAMPLE 2 ########
 library(MACHISPLIN)

@@ -36,5 +36,5 @@ raster_stack<-stack(ALT,SLOPE,TWI,ASPECT)
 #run an ensemble machine learning thin plate spline 
 interp.rast<-machisplin.mltps(int.values=Mydata, covar.ras=raster_stack, n.cores=2)
 
-machisplin.write.geotiff(mltps.in=interp.rast)
+machisplin.write.residuals(mltps.in=interp.rast)
 }

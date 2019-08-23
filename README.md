@@ -20,7 +20,7 @@ Details of Modeling using Hi-resolution Covariates
 Example of the results (all with R2>0.99).
 
 
-# Example 1
+### Example 1
 ```markdown
 ######## EXAMPLE 1 ########
 library(MACHISPLIN)
@@ -53,7 +53,7 @@ interp.rast[[1]]$var.imp
 interp.rast[[1]]$summary
 ```
 
-# Example 2
+### Example 2
 ```markdown
 library(MACHISPLIN)
 library(raster)

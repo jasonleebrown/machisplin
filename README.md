@@ -160,15 +160,15 @@ Now use the 'InInterp' and 'raster_covar_layers' in the 'machisplin.mltps' funct
 
 
 # Need help with the high resolution topography data? 
-Below are my favorite layers.
-1. Download 30m or 90m elevation data and mosaic tile to single file in GIS
+1. Get a high resolution elevation model
+-Download 30m or 90m elevation data and mosaic tile to single file in GIS
 https://earthexplorer.usgs.gov/ (requires registration)
-2. Create  30m or 90m Geomophons using Grass GIS
- http://shorturl.at/cesZ1
-3. Create  30m or 90m TWI, slope and aspect using SAGA GIS
-http://www.saga-gis.org/
 
-
+2. Use the high resolution elevation model to create topography layers:
+Geomorphons:
+ Use Grass GIS (http://shorturl.at/cesZ1)
+Topographic Wetness Index (TWI), slope and aspect:
+ Using SAGA GIS (http://www.saga-gis.org/)
 
 
 

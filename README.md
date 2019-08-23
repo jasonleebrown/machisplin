@@ -102,7 +102,7 @@ You need two sets of datafiles.  1. the layers that will be interpolated and 2. 
 ### 1. Layers to be interpoloated 
 This is a single data file where the first two columns are longitude and latitude (x and y) in that order.  The following columns represent the corresponding values of the data layers that will be interpoloated.   This can a single layer (=1 column) or a dozen (=12 columns). These values can be obtained from field data (e.g. weather station measurements) or directly from a lower resolution raster.
 
-### 2. High resolution covariates
+### 2. High-resolution covariates
 These need to be a series of high resolution raster combinded into a raster stack.   All rasters must be the same: resolution, projection and extent.  Typically these are microtopgraphic layers.  
 
 ### Importing rasters into R

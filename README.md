@@ -102,10 +102,8 @@ You need two sets of datafiles.  1. the layers that will be interpolated and 2. 
 ### 1. Layers to be interpoloated 
 The first two column need to be longitude and latitude (x and y), in that order.  The following columns are the data layers that will be interpoloated.  
 
-To format the climate/environment raster data so that it can be used in Humbolt, follow these steps:
-1.	Importing raster data into R
-2.	Clip extent down to area of analysis 
-3.	Convert input rasters to 'humboldt' format
+### 2. High resolution covariates
+These need to be the same resolution and all cliped to the same extent.  
 
 ### Importing rasters into R
 ```markdown

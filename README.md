@@ -100,7 +100,7 @@ interp.rast[[1]]$summary
 You need two sets of datafiles.  1. the layers that will be interpolated and 2. higher resolution covariates that will be use to downscale interpolation layers 
 
 ### 1. Layers to be interpoloated 
-The first two column need to be longitude and latitude (x and y), in that order.  The following columns are the data layers that will be interpoloated.  
+This is a single data file where the first two column need to be longitude and latitude (x and y), in that order.  The following columns represent the corresponding values of the data layers that will be interpoloated.  
 
 ### 2. High resolution covariates
 These need to be raster combinded into a raster stack.   All rasters must be the same: resolution, projection and extent.  

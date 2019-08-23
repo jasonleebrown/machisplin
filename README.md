@@ -159,7 +159,8 @@ Now use the 'InInterp' and 'raster_covar_layers' in the 'machisplin.mltps' funct
 'interp.rast<-machisplin.mltps(int.values=InInterp, covar.ras=raster_covar_layers, n.cores=2)'
 
 
-# Need help with the high resolution topography data? Below are my favorite layers.
+# Need help with the high resolution topography data? 
+Below are my favorite layers.
 1. Download 30m or 90m elevation data and mosaic tile to single file in GIS
 https://earthexplorer.usgs.gov/ (requires registration)
 2. Create  30m or 90m Geomophons using Grass GIS

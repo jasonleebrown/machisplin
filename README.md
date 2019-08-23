@@ -100,10 +100,10 @@ interp.rast[[1]]$summary
 You need two sets of datafiles.  1. the layers that will be interpolated and 2. higher resolution covariates that will be use to downscale interpolation layers 
 
 ### 1. Layers to be interpoloated 
-This is a single data file where the first two column need to be longitude and latitude (x and y), in that order.  The following columns represent the corresponding values of the data layers that will be interpoloated.  
+This is a single data file where the first two columns are longitude and latitude (x and y) in that order.  The following columns represent the corresponding values of the data layers that will be interpoloated.   This can a single layer (=1 column) or a dozen (=12 columns).    
 
 ### 2. High resolution covariates
-These need to be raster combinded into a raster stack.   All rasters must be the same: resolution, projection and extent.  
+These need to be a series of high resolution raster combinded into a raster stack.   All rasters must be the same: resolution, projection and extent.  Typically these are microtopgraphic layers.  
 
 ### Importing rasters into R
 ```markdown
@@ -157,6 +157,18 @@ write.csv(Env1, file = "InInterp_v1.csv")
 
 Now use the 'InInterp' and 'raster_covar_layers' in the 'machisplin.mltps' function, for example:
 'interp.rast<-machisplin.mltps(int.values=InInterp, covar.ras=raster_covar_layers, n.cores=2)'
+
+
+# Need help with the high resolution topography data? Below are my favorite layers.
+1. Download 30m or 90m elevation data and mosaic tile to single file in GIS
+https://earthexplorer.usgs.gov/ (requires registration)
+2. Create  30m or 90m Geomophons using Grass GIS
+ http://shorturl.at/cesZ1
+3. Create  30m or 90m TWI, slope and aspect using SAGA GIS
+http://www.saga-gis.org/
+
+
+
 
 
 [![Analytics](https://ga-beacon.appspot.com/UA-136960917-1/machisplin)](https://github.com/igrigorik/ga-beacon)

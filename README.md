@@ -166,7 +166,7 @@ https://earthexplorer.usgs.gov/ (requires registration)
 
 2. Use the high resolution elevation model to create topography layers:
 Geomorphons:
- Use Grass GIS (http://shorturl.at/cesZ1)
+ Use Grass GIS (http://shorturl.at/cesZ1);
 Topographic Wetness Index (TWI), slope and aspect:
  Using SAGA GIS (http://www.saga-gis.org/)
 

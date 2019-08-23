@@ -97,10 +97,10 @@ interp.rast[[1]]$summary
 ```
 
 ## Getting environmental data formatted for ‘MACHISPLIN’
-You need two sets of datafiles.  1. the layers that will be interpolated and 2. higher resolution covariates that will be use to downscale interpolation layers 
+You need two sets of datafiles.  1. the layers that will be interpolated and 2. higher resolution covariates that will be use to downscale interpolation layers. 
 
 ### 1. Layers to be interpoloated 
-This is a single data file where the first two columns are longitude and latitude (x and y) in that order.  The following columns represent the corresponding values of the data layers that will be interpoloated.   This can a single layer (=1 column) or a dozen (=12 columns).    
+This is a single data file where the first two columns are longitude and latitude (x and y) in that order.  The following columns represent the corresponding values of the data layers that will be interpoloated.   This can a single layer (=1 column) or a dozen (=12 columns). These values can be obtained from field data (e.g. weather station measurements) or directly from a lower resolution raster.
 
 ### 2. High resolution covariates
 These need to be a series of high resolution raster combinded into a raster stack.   All rasters must be the same: resolution, projection and extent.  Typically these are microtopgraphic layers.  
@@ -109,13 +109,13 @@ These need to be a series of high resolution raster combinded into a raster stac
 ```markdown
 library(raster)
 
-##rasters to downscale, here Tiff rasters are in base working directory
+##rasters to downscale (= make higher resolution), here they 'Tiff' rasters are in base working directory
 BIO1 = raster("bio1.tif")
 BIO2 = raster("bio2.tif")
 BIO12 = raster("bio12.tif")
 BIO15= raster("bio15.tif")
 
-#high resolution covariate rasters
+##high-resolution covariate rasters
 ALT = raster("SRTM30m.tif")
 SLOPE = raster("ln_slope.tif")
 TWI = raster("TWI.tif")

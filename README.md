@@ -168,8 +168,8 @@ https://earthexplorer.usgs.gov/ (requires registration)
 Geomorphons:
  use Grass GIS (http://shorturl.at/cesZ1);
 Topographic Wetness Index (TWI), slope and aspect:
- use SAGA GIS (http://www.saga-gis.org/)
- Note that you can also generate slope and aspect in ArcMap or R, but in these programs the creation of TWI is quite complex.  Thus its best just to use SAGA GIS in which all are done by simply clicking a button.
+ use SAGA GIS (http://www.saga-gis.org/).
+ Note that you can also generate slope and aspect in ArcMap or R, but in these programs the creation of TWI is quite complex. Thus, its best just to use SAGA GIS where all are done by simply clicking a button.
 
 
 [![Analytics](https://ga-beacon.appspot.com/UA-136960917-1/machisplin)](https://github.com/igrigorik/ga-beacon)

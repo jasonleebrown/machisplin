@@ -67,7 +67,11 @@ machisplin.write.geotiff(mltps.in=interp.rast)
 machisplin.write.residuals(mltps.in=interp.rast)
 machisplin.write.loadings(mltps.in=interp.rast)
 ```
-
+ 	Slide26.JPG
+![Alt text](https://raw.githubusercontent.com/jasonleebrown/machisplin/master/Slide19.JPG?raw=true "Title")
+![Alt text](https://raw.githubusercontent.com/jasonleebrown/machisplin/master/Slide20.JPG?raw=true "Title")
+![Alt text](https://raw.githubusercontent.com/jasonleebrown/machisplin/master/Slide21.JPG?raw=true "Title")
+![Alt text](https://raw.githubusercontent.com/jasonleebrown/machisplin/master/Slide26.JPG?raw=true "Title")
 ![Alt text](https://raw.githubusercontent.com/jasonleebrown/machisplin/master/MACHISPLIN_LOGOv2.jpg?raw=true "Title")
 
 

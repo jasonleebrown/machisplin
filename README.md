@@ -139,7 +139,7 @@ interp_layers <- crop(raster_interp_layers, e.in)
 covar_layers <- crop(raster_covar_layers, e.in)	
 ```
 
-### Convert input iterpolation rasters to 'MACHISPLIN' format (continued from previous step)
+### Convert input 'rasters to interpolated' to 'MACHISPLIN' format (continued from previous step)
 ```markdown
 ##convert one of the rasters to a point dataframe to sample.  Use any raster input.
 env.points<-rasterToPoints(BIO1, fun=NULL, spatial=FALSE)

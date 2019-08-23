@@ -103,7 +103,7 @@ You need two sets of datafiles.  1. the layers that will be interpolated and 2. 
 The first two column need to be longitude and latitude (x and y), in that order.  The following columns are the data layers that will be interpoloated.  
 
 ### 2. High resolution covariates
-These need to be the same resolution and all cliped to the same extent.  
+These need to be raster combinded into a raster stack.   All rasters must be the same: resolution, projection and extent.  
 
 ### Importing rasters into R
 ```markdown

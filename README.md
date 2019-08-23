@@ -3,7 +3,7 @@
 # machisplin
 An R package for interpolation of noisy multi-variate data through comprehensive statistical analyses using thin-plate-smoothing splines and machine learning ensembling.  This package is a free open-source machine learning analog to the expensive ANUSPLIN software. 
 
-## To install open R and type the following:
+## To install, open R and type the following:
 ```markdown
 install.packages("devtools")
 library(devtools)

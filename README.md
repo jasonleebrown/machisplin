@@ -159,12 +159,12 @@ Now use the 'InInterp' and 'raster_covar_layers' in the 'machisplin.mltps' funct
 'interp.rast<-machisplin.mltps(int.values=InInterp, covar.ras=raster_covar_layers, n.cores=2)'
 
 
-# Need help with the high resolution topography data? 
-1. Get a high resolution elevation model
+# Need help with the high-resolution topography data? 
+1. Get a high-resolution elevation model
 -Download 30m or 90m elevation data and mosaic tile to single file in GIS
 https://earthexplorer.usgs.gov/ (requires registration)
 
-2. Use the high resolution elevation model to create topography layers:
+2. Use the high-resolution elevation model to create topography layers:
 Geomorphons:
  use Grass GIS (http://shorturl.at/cesZ1);
 Topographic Wetness Index (TWI), slope and aspect:

@@ -166,9 +166,9 @@ https://earthexplorer.usgs.gov/ (requires registration)
 
 2. Use the high resolution elevation model to create topography layers:
 Geomorphons:
- Use Grass GIS (http://shorturl.at/cesZ1);
+ use Grass GIS (http://shorturl.at/cesZ1);
 Topographic Wetness Index (TWI), slope and aspect:
- Use SAGA GIS (http://www.saga-gis.org/)
+ use SAGA GIS (http://www.saga-gis.org/)
  Note that you can also generate slope and aspect in ArcMap or R, but in these programs the creation of TWI is quite complex.  Thus its best just to use SAGA GIS in which all are done by simply clicking a button.
 
 

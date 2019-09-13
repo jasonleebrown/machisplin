@@ -16,7 +16,8 @@ install_github("jasonleebrown/machisplin")
 ## Input Data formats
 To explore data format for input data, see:
 ```markdown
-library(humboldt)
+library(raster)
+library(MACHISPLIN)
 ##data format that will be interpolated, each column is a different dataset
 Mydata<-sampling
 
@@ -149,7 +150,7 @@ env.points<- env.points[,1:2]
 RAST_VAL<-data.frame(extract(interp_layers, env.points))
 
 ##merge sampled data to input
-InInterp<-cbind(env.sampling.res,RAST_VAL)
+InInterp<-cbind(env.points,RAST_VAL)
 
 ##save the file as '.csv' for future analyses 
 write.csv(Env1, file = "InInterp_v1.csv")

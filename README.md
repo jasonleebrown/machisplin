@@ -69,6 +69,7 @@ machisplin.write.loadings(mltps.in=interp.rast)
 see below for help formating raster/environment data. 
 ```markdown
 library(MACHISPLIN)
+library(raster)
 
 # Import a csv as shapefile:
 Mydata<-read.delim("sampling.csv", sep=",", h=T)

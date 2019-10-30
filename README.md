@@ -41,7 +41,7 @@ Details of modeling using higher resolution covariates
 ![Alt text](https://raw.githubusercontent.com/jasonleebrown/machisplin/master/Slide26.JPG?raw=true "Title")
 Example of the results (all with R2>0.99).
 
-### Example 1 - uisng provide datasets
+### Example 1 - using provided datasets
 ```markdown
 library(MACHISPLIN)
 library(raster)

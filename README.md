@@ -47,6 +47,7 @@ library(MACHISPLIN)
 library(raster)
 
 ##load spatial data with (coordinates named exactly as 'long' and 'lat') and any number of layers to downscale
+##note this can be from a raster of lower resolution climate data or point weather station data
 data(sampling)
 Mydata<-sampling
 

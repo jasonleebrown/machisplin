@@ -81,7 +81,7 @@ SLOPE = raster("ln_slope.tif")
 TWI = raster("TWI.tif")
 
 # function input: raster brick of covarites
-raster_stack<-stack(ALT,SLOPE,TWI,ASPECT)
+raster_stack<-stack(ALT,SLOPE,TWI)
 
 #run an ensemble machine learning thin plate spline 
 interp.rast<-machisplin.mltps(int.values=Mydata, covar.ras=raster_stack, n.cores=2, tps=FALSE)

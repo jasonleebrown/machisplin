@@ -41,7 +41,7 @@ Details of modeling using higher resolution covariates
 ![Alt text](https://raw.githubusercontent.com/jasonleebrown/machisplin/master/Slide26.JPG?raw=true "Title")
 Example of the results (all with R2>0.99).
 
-## Udpate: New Parameter (1/15/2021)
+## Update: New Parameter (1/15/2021)
 I recently added a new parameter 'smooth.outputs.only' to the 'machisplin.mltps' function.  If smooth.outputs.only=TRUE, this removes Boosted Regressive Trees and Random Forests from the options of modeling algorithms. Both occasionally produce blocky outputs. I always recommend first using smooth.outputs.only=FALSE for the intial analyses. Then if you are unhappy with the visual appearance of the created layers, consider smooth.outputs.only=TRUE. Be aware that now your model performance might dramatically decline because those two algorithms have been excluded. Note that my biggest concern with blocky interpolated surfances, in addtion to looking bad, is the blockiness itself might be the result of overfitting to noise in the training datasets. In most cases, I think smooth continuous surfaces best characterize most spatial processes. Thus, the smoother results might in fact better represent the truth, despite a slightly lower performance. 
 
 ![Alt text](https://raw.githubusercontent.com/jasonleebrown/machisplin/master/machisplinParm.jpg?raw=true "Title")

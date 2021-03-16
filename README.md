@@ -185,4 +185,3 @@ Topographic Wetness Index (TWI), slope and aspect:
 
 
 [![Analytics](https://ga-beacon.appspot.com/UA-136960917-1/machisplin)](https://github.com/igrigorik/ga-beacon)
-[![Analytics](https://ga-beacon.appspot.com/UA-136933757-1/machuruku?pixel)](https://github.com/igrigorik/ga-beacon)

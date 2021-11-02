@@ -804,7 +804,8 @@ if(n.cores>1){
 	return(f)
 }
 if(n.cores==1){
-			if(n.spln>1){i<-seq(1,n.spln)} else {i<-1}# length = number of climate variables
+	if(n.spln>1){iter.clim<-seq(1,n.spln)} else {iter.clim<-1}# length = number of climate variables
+		for(i in iter.clim){
 			##################################################################################################
 			############################# part 1 evaluate best ensemble of models ##############################
 			##################################################################################################
@@ -1401,7 +1402,7 @@ if(n.cores==1){
 				}
 		l$var.imp
 		return(l)
-	}
+	}}
 }
 
 ##################################################################################################
@@ -1562,3 +1563,20 @@ library(spdep)
 library(nnet)
 library(optimx)
 "
+
+import(dismo)
+import(maptools)
+import(raster)
+import(rgdal)
+import(snow)
+import(snowfall)
+importFrom(NeuralNetTools,garson)
+importFrom(breakDown,broken)
+importFrom(earth,earth)
+importFrom(earth,evimp)
+importFrom(fields,Tps)
+importFrom(kernlab,ksvm)
+importFrom(mgcv,gam)
+importFrom(nnet,nnet)
+importFrom(optimx,optimx)
+importFrom(randomForest,randomForest)

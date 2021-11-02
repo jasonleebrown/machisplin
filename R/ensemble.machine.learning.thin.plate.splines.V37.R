@@ -1213,11 +1213,11 @@ if(n.cores==1){
 				nr.in<-nrow(rast_stack)
 				#specify n cols 
 				nc.in<-ncol(rast_stack)
-				#specify n row blocks
-				nrB<-nr.in/3000
+				#specify n row blocks,3000
+				nrB<-nr.in/1000
 				nRx<-ceiling(nrB)
-				#specify n col blocks
-				ncB<-nc.in/3000
+				#specify n col blocks,3000
+				ncB<-nc.in/1000
 				nCx<-ceiling(ncB)
 				#specify lat distance
 				longDist<-((totalExt[2]-totalExt[1])/nCx)

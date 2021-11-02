@@ -839,7 +839,7 @@ if(n.cores==1){
 			####train models
 			print(paste("Running k-fold cross-validation for ",(out.names[i]),": Boosted Regresion Trees: Iteration",(v),"(of 10)"))
             gc()
-			mod.brt.tps.elev<- gbm.step(data=train, gbm.x = 2:(n.covars+1), gbm.y =1, family = "gaussian", tree.complexity = 25, learning.rate = 0.01, bag.fraction = 0.5, plot.main = FALSE, verbose=FALSE, silent=TRUE)
+			mod.brt.tps.elev<- gbm.step(data=train, gbm.x = 2:(n.covars+1), gbm.y =1, family = "gaussian", tree.complexity = 25, learning.rate = 0.01, bag.fraction = 0.5, plot.main = FALSE, silent = TRUE)
 		    mod.rf.tps.elev<- randomForest(mod.form, data = train)
             mod.nn.tps.elev<-nnet(mod.form, data = trainNN, size=10, linout=TRUE, maxit=10000)
 			mod.mars.tps.elev<-earth(mod.form, data = train, nfold=10)
@@ -850,7 +850,7 @@ if(n.cores==1){
 			#extract residuals and calculate residual sum of squares
 			#BRT
 			gc()
-			pred.brt.obs <- predict(mod.brt.tps.elev, test, n.trees=mod.brt.tps.elev$gbm.call$best.trees, type="response", silent=TRUE)
+			pred.brt.obs <- predict(mod.brt.tps.elev, test, n.trees=mod.brt.tps.elev$gbm.call$best.trees, type="response")
             res.brt.elev<-test[,1]-pred.brt.obs
 			if(is.null(mfit.brt.full)==FALSE){
 			    mfit.brt.r2<-res.brt.elev
@@ -1068,7 +1068,7 @@ if(n.cores==1){
 			  	print(paste("Final modeling of ",(out.names[i]),": Boosted Regression Trees"))
 				mod.run="BRT"
 				#run model with all points
-				mod.brt.tps.FINAL<- gbm.step(data=dat_tps[[i]], gbm.x = 2:(n.covars+1), gbm.y =1, family = "gaussian", tree.complexity = 5, learning.rate = 0.001, bag.fraction = 0.5, plot.main = FALSE, verbose=FALSE, silent=TRUE)
+				mod.brt.tps.FINAL<- gbm.step(data=dat_tps[[i]], gbm.x = 2:(n.covars+1), gbm.y =1, family = "gaussian", tree.complexity = 5, learning.rate = 0.001, bag.fraction = 0.5, plot.main = FALSE, silent = TRUE)
 				#store variable importance
 				l$var.imp$brt<-mod.brt.tps.FINAL$contributions
 				#create raster prediction

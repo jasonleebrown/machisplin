@@ -804,7 +804,7 @@ if(n.cores>1){
 	return(f)
 }
 if(n.cores==1){
-	if(n.spln>1){i<-seq(1,n.spln)} else {i<-1}# length = number of climate variables
+			if(n.spln>1){i<-seq(1,n.spln)} else {i<-1}# length = number of climate variables
 			##################################################################################################
 			############################# part 1 evaluate best ensemble of models ##############################
 			##################################################################################################

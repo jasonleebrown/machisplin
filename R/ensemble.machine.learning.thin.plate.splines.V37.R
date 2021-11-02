@@ -850,7 +850,7 @@ if(n.cores==1){
 			#extract residuals and calculate residual sum of squares
 			#BRT
 			gc()
-			pred.brt.obs <- predict(mod.brt.tps.elev, test, n.trees=mod.brt.tps.elev$gbm.call$best.trees, type="response")
+			pred.brt.obs <- predict(mod.brt.tps.elev, test, n.trees=mod.brt.tps.elev$gbm.call$best.trees, type="response", silent=TRUE)
             res.brt.elev<-test[,1]-pred.brt.obs
 			if(is.null(mfit.brt.full)==FALSE){
 			    mfit.brt.r2<-res.brt.elev
@@ -1214,10 +1214,10 @@ if(n.cores==1){
 				#specify n cols 
 				nc.in<-ncol(rast_stack)
 				#specify n row blocks,3000
-				nrB<-nr.in/1000
+				nrB<-nr.in/3000
 				nRx<-ceiling(nrB)
 				#specify n col blocks,3000
-				ncB<-nc.in/1000
+				ncB<-nc.in/3000
 				nCx<-ceiling(ncB)
 				#specify lat distance
 				longDist<-((totalExt[2]-totalExt[1])/nCx)

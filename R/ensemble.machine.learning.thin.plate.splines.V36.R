@@ -168,7 +168,7 @@ mod.form<- as.formula(paste("resp ~ ", paste(xnam, collapse= "+")))
 ########################################################################
 #########################################################################
 #function to pass to snowfall for parallel computing 
-if n.cores>1{
+if(n.cores>1){
 	if(n.spln>1){i<-seq(1,n.spln)} else {i<-1}# length = number of climate variables
 		myLapply_elevOut<-function(i){
 			##################################################################################################
@@ -803,7 +803,7 @@ if n.cores>1{
 	f<-mySFelevOut
 	return(f)
 	}}
-if n.cores==1{
+if(n.cores==1){
 	if(n.spln>1){i<-seq(1,n.spln)} else {i<-1}# length = number of climate variables
 			##################################################################################################
 			############################# part 1 evaluate best ensemble of models ##############################

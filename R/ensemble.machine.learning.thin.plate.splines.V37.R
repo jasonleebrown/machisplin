@@ -819,6 +819,7 @@ if(n.cores==1){
 			mfit.brt.full<-mfit.rf.full<-mfit.nn.full<-mfit.mars.full<-mfit.svm.full<-mfit.gam.full<-NULL
             
 			for (v in 1:nfolds) {
+			print(paste("*******Iteration",(v),"(of 10)*************************************************"))
 			#train with 90% of data is <4000 or 10% if >4000 total rows
 			if (nrow(dat_tps[[i]])>4000){
 				train <- dat_tps[[i]][kfolds==v,]
@@ -838,7 +839,7 @@ if(n.cores==1){
 			####train models
 			print(paste("Running k-fold cross-validation for ",(out.names[i]),": Boosted Regresion Trees: Iteration",(v),"(of 10)"))
             gc()
-			mod.brt.tps.elev<- gbm.step(data=train, gbm.x = 2:(n.covars+1), gbm.y =1, family = "gaussian", tree.complexity = 25, learning.rate = 0.01, bag.fraction = 0.5, plot.main = FALSE, silent=TRUE)
+			mod.brt.tps.elev<- gbm.step(data=train, gbm.x = 2:(n.covars+1), gbm.y =1, family = "gaussian", tree.complexity = 25, learning.rate = 0.01, bag.fraction = 0.5, plot.main = FALSE, verbose=FALSE)
 		    mod.rf.tps.elev<- randomForest(mod.form, data = train)
             mod.nn.tps.elev<-nnet(mod.form, data = trainNN, size=10, linout=TRUE, maxit=10000)
 			mod.mars.tps.elev<-earth(mod.form, data = train, nfold=10)
@@ -1067,7 +1068,7 @@ if(n.cores==1){
 			  	print(paste("Final modeling of ",(out.names[i]),": Boosted Regression Trees"))
 				mod.run="BRT"
 				#run model with all points
-				mod.brt.tps.FINAL<- gbm.step(data=dat_tps[[i]], gbm.x = 2:(n.covars+1), gbm.y =1, family = "gaussian", tree.complexity = 5, learning.rate = 0.001, bag.fraction = 0.5, plot.main = FALSE, silent=TRUE)
+				mod.brt.tps.FINAL<- gbm.step(data=dat_tps[[i]], gbm.x = 2:(n.covars+1), gbm.y =1, family = "gaussian", tree.complexity = 5, learning.rate = 0.001, bag.fraction = 0.5, plot.main = FALSE, verbose=FALSE)
 				#store variable importance
 				l$var.imp$brt<-mod.brt.tps.FINAL$contributions
 				#create raster prediction
@@ -1185,7 +1186,7 @@ if(n.cores==1){
 	   		    gc()
 				}
 			}
-			print(paste("Final ensemble of models: ",(out.names[i])))
+			print(paste("Calculating final ensemble of models for ",(out.names[i])))
 			#wrap up analysis and get final layer
 			#divide models by number ensembled
             pred.elev<-(pred.elev/OptX.mfit.wt.tot)
@@ -1205,8 +1206,8 @@ if(n.cores==1){
 			##################################################################################################
 			#DETERMINE IF TILING IS NEEDED
 			if(tps==TRUE) {
-				print(paste("Correcting model error: thin plate-spline of residuals of ",(out.names[i])))
-				#specify total extent
+				print(paste("Correcting model error: thin plate spline of residuals of ",(out.names[i])))
+				#specify total extents
 				totalExt<-extent(rast_stack)
 				#specify n rows 
 				nr.in<-nrow(rast_stack)
@@ -1241,12 +1242,12 @@ if(n.cores==1){
 				
 				#specify full cordinates for spatial subsampling
 				#perform TPS on each grid and then mosaic
-				print(paste("Thin plate-splines of residuals will be tiled across ",(nRx*nCx)," tiles, layer: ", (out.names[i])))
+				print(paste("Thin plate splines of residuals will be tiled across ",(nRx*nCx)," tiles, layer: ", (out.names[i])))
 				if(nRx*nCx>1){
 					Full.cords<-dat_tps[[1]][,c(n.covars,n.covars+1)]
 					pred_TPS_elev<-NULL
 					for (h in 1:(nRx*nCx)){
-						print(paste("Performing thin plate-splines of residuals on tile",(h)))
+						print(paste("Performing thin plate splines of residuals on tile",(h)))
 						gc()
 						#clip raster brick
 						b <- as(extent(new.df[[h]][1], new.df[[h]][2], new.df[[h]][3], new.df[[h]][4]), 'SpatialPolygons')
@@ -1276,12 +1277,12 @@ if(n.cores==1){
 						}}
 				if(nRx*nCx>1){
 					rast.list<-as.list(raster_sTPS)
-						print("Creating a mosaic all thin plate-splines tiles")
+						print("Creating a mosaic all thin plate splines tiles")
 						rast.list$fun <- mean
 								rast.mosaic <- do.call(mosaic,rast.list)}
 				if(nRx*nCx==1){
 					#fit thin plate spline of residuals
-					print("Performing thin plate-splines of residuals")				
+					print("Performing thin plate splines of residuals")				
 					mod.tps.elev<-Tps(dat_tps[[i]][,c(n.covars,n.covars+1)], res.FINAL)#columns of lat and long
 					#use TPS to interpolate residuals
 					rast.mosaic<-interpolate(rast_stack, mod.tps.elev)}
@@ -1290,10 +1291,10 @@ if(n.cores==1){
 				##################################################################################################
 				#feather right
 				feath.ras.TPS<-NULL
-				print("Feathering seams of thin plate-splines")				
+				print("Feathering seams of thin plate splines")				
 				for (j in 1:nRx){
 				   for (h in 1:nCx){
-						print(paste("Feathering seams of thin plate-splines for edge: ",j," and ",h))				
+						print(paste("Feathering seams of thin plate splines for edge: ",j," and ",h))				
 						gc()
 						v<-(h+((j*nCx)-nCx))
 						if (h<nCx){
@@ -1384,7 +1385,7 @@ if(n.cores==1){
 			##################################################################################################
 			################################# part 5 finalize results ##################################
 			##################################################################################################
-			print(paste("Finalizing All Results!!!:",  (out.names[i]),))			
+			print(paste("Finalizing All Results!!!:",  (out.names[i])))			
 			if(tps==TRUE) {
 				gc()
 				#calculate pred at normal scale, suming up kriging pred+res

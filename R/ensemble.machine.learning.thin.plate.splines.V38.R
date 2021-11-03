@@ -1407,7 +1407,7 @@ if(n.cores==1){
 			##################################################################################################
 			################################# part 5 finalize results ##################################
 			##################################################################################################
-			print(paste(S"Finalizing All Results!!!:", (out.names[i]), Sys.time()))			
+			print(paste("Finalizing All Results!!!:", (out.names[i]), Sys.time()))			
 			if(tps==TRUE) {
 				gc()
 				#calculate pred at normal scale, suming up kriging pred+res

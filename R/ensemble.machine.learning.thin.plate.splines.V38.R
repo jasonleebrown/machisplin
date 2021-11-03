@@ -813,7 +813,8 @@ if(n.cores==1){
             #perform K-fold cross val
 			l <- list()
 			print(paste("DOWNSCALING: ",(out.names[i])))
-			print(paste(Sys.time(),"Setting up datasets for k-fold crossvalidation: ",(out.names[i])))
+			print(paste("Setting up datasets for k-fold crossvalidation: ",(out.names[i])))
+			Sys.time()
 			nfolds <- 10
 			kfolds <- kfold(dat_tps[[i]], nfolds)
 						
@@ -838,8 +839,9 @@ if(n.cores==1){
 			trainNN$resp<-trainNN$resp/max2.resp
 			
 			####train models
-			print(paste(Sys.time(),"Running k-fold cross-validation for ",(out.names[i]),": Boosted Regresion Trees: Iteration",(v),"(of 10)"))
-            gc()
+			print(paste("Running k-fold cross-validation for ",(out.names[i]),": Boosted Regresion Trees: Iteration",(v),"(of 10)"))
+            Sys.time()
+			gc()
 			mod.brt.tps.elev<- gbm.step(data=train, gbm.x = 2:(n.covars+1), gbm.y =1, family = "gaussian", tree.complexity = 25, learning.rate = 0.01, bag.fraction = 0.5, plot.main = FALSE, silent = TRUE)
 		    mod.rf.tps.elev<- randomForest(mod.form, data = train)
             mod.nn.tps.elev<-nnet(mod.form, data = trainNN, size=10, linout=TRUE, maxit=10000)
@@ -860,7 +862,8 @@ if(n.cores==1){
 	        	
 			#RF
 			gc()
-			print(paste(Sys.time(),"Running k-fold cross-validation for ",(out.names[i]),": Random Forests: Iteration",(v),"(of 10)"))
+			print(paste("Running k-fold cross-validation for ",(out.names[i]),": Random Forests: Iteration",(v),"(of 10)"))
+			Sys.time()
             pred.rf.obs<-predict(mod.rf.tps.elev, test, type="response", norm.votes=TRUE, predict.all=FALSE, proximity=FALSE, nodes=FALSE)
 			res.rf.elev<-test[,1]-pred.rf.obs
 			if(is.null(mfit.rf.full)==FALSE){
@@ -869,7 +872,8 @@ if(n.cores==1){
 			if(is.null(mfit.rf.full)==TRUE){mfit.rf.full<-res.rf.elev}
 				
 			#NN
-			print(paste(Sys.time(),"Running k-fold cross-validation for ",(out.names[i]),": Neural Networks: Iteration",(v),"(of 10)"))
+			print(paste("Running k-fold cross-validation for ",(out.names[i]),": Neural Networks: Iteration",(v),"(of 10)"))
+			Sys.time()
 			gc()
 			pred.nn1<-predict(mod.nn.tps.elev, test)*max2.resp
 			pred.nn2<-pred.nn1+min.resp
@@ -880,7 +884,8 @@ if(n.cores==1){
 			if(is.null(mfit.nn.full)==TRUE){mfit.nn.full<-res.nn.elev}
             
 			#MAR
-			print(paste(Sys.time(),"Running k-fold cross-validation for ",(out.names[i]),": Multivariate Adaptive Regression Splines: Iteration",(v),"(of 10)"))
+			print(paste("Running k-fold cross-validation for ",(out.names[i]),": Multivariate Adaptive Regression Splines: Iteration",(v),"(of 10)"))
+			Sys.time()
 			gc()
 			pred.mars.test<-predict(mod.mars.tps.elev,test)
 			res.mars.elev<-as.vector(test[,1]-pred.mars.test) 
@@ -891,7 +896,8 @@ if(n.cores==1){
             
 			#SVM
 			gc()
-			print(paste(Sys.time(),"Running k-fold cross-validation for ",(out.names[i]),": Support Vector Machines: Iteration",(v),"(of 10)"))
+			print(paste("Running k-fold cross-validation for ",(out.names[i]),": Support Vector Machines: Iteration",(v),"(of 10)"))
+			Sys.time()
 			pred.svm.test<-predict(mod.svm.tps.elev,test)
 			res.svm.elev<-test[,1]-pred.svm.test 
 			if(is.null(mfit.svm.full)==FALSE){
@@ -901,7 +907,8 @@ if(n.cores==1){
             
 			#GAM
 			gc()
-			print(paste(Sys.time(),"Running k-fold cross-validation for ",(out.names[i]),": Generalized Additive Models: Iteration",(v),"(of 10)"))
+			print(paste("Running k-fold cross-validation for ",(out.names[i]),": Generalized Additive Models: Iteration",(v),"(of 10)"))
+			Sys.time()
 			pred.gam.test<-predict(mod.gam.tps.elev,test)
 			res.gam.elev<-as.vector(test[,1]-pred.gam.test)
 			if(is.null(mfit.gam.full)==FALSE){
@@ -1021,14 +1028,16 @@ if(n.cores==1){
 			##################################################################################################
 			######################################## part 2 run best model(s)  #################################
 			##################################################################################################
-            print(paste(Sys.time(),"Running Final Models for Ensemble of ",(ku)," Algorithms"))
+            print(paste("Running Final Models for Ensemble of ",(ku)," Algorithms"))
+			Sys.time()
 			pred.elev<- NULL
 			res.FINAL<-NULL
 			iter.mod<-0
 			for(k in mods.run){	
 			  iter.mod<-iter.mod+1
    			  if (k=="n"){
-			  	print(paste(Sys.time(),"Final modeling of ",(out.names[i]),": Nueral Networks"))
+			  	print(paste("Final modeling of ",(out.names[i]),": Nueral Networks"))
+				Sys.time()
 			    ##### create dataset for nueral networks (resp has to have values between 0-1)
 			    gc()
 				trainNN.f<-dat_tps[[i]]
@@ -1066,7 +1075,8 @@ if(n.cores==1){
   	          ##final models = boosted regression tree	
 			  if (k=="b"){
 				gc()
-			  	print(paste(Sys.time(),"Final modeling of ",(out.names[i]),": Boosted Regression Trees"))
+			  	print(paste("Final modeling of ",(out.names[i]),": Boosted Regression Trees"))
+				Sys.time()
 				mod.run="BRT"
 				#run model with all points
 				mod.brt.tps.FINAL<- gbm.step(data=dat_tps[[i]], gbm.x = 2:(n.covars+1), gbm.y =1, family = "gaussian", tree.complexity = 5, learning.rate = 0.001, bag.fraction = 0.5, plot.main = FALSE, silent = TRUE)
@@ -1090,7 +1100,8 @@ if(n.cores==1){
 			  if (k=="r"){
 				gc()
 				mod.run="RF"
-				print(paste(Sys.time(),"Final modeling of ",(out.names[i]),": Random Forests"))
+				print(paste("Final modeling of ",(out.names[i]),": Random Forests"))
+				Sys.time()
 				#run model with all points
 				mod.rf.tps.FINAL<- randomForest(mod.form, data = dat_tps[[i]],importance = TRUE)
 				#store variable importance
@@ -1111,7 +1122,8 @@ if(n.cores==1){
 			  if (k=="m"){
 				gc()
 				mod.run="MARS"
-				print(paste(Sys.time(),"Final modeling of ",(out.names[i]),": Multivariate Adaptive Regression Splines"))
+				print(paste("Final modeling of ",(out.names[i]),": Multivariate Adaptive Regression Splines"))
+				Sys.time()
 				#run model with all points
 				mod.MARS.tps.FINAL<-earth(mod.form,  data = dat_tps[[i]], nfold=10)
 				#store variable importance
@@ -1131,7 +1143,8 @@ if(n.cores==1){
 			  if (k=="v"){
 				gc()
 				mod.run="SVM"
-				print(paste(Sys.time(),"Final modeling of ",(out.names[i]),": Support Vector Machines"))
+				print(paste("Final modeling of ",(out.names[i]),": Support Vector Machines"))
+				Sys.time()
 				#run model with all points
 				mod.SVM.tps.FINAL<-ksvm(mod.form, data=dat_tps[[i]])
 				#store variable importance
@@ -1170,7 +1183,8 @@ if(n.cores==1){
 			  if (k=="g"){
 				gc()
 				mod.run="GAM"
-				print(paste(Sys.time(),"Final modeling of ",(out.names[i]),": Generalized Additive Model"))				
+				print(paste("Final modeling of ",(out.names[i]),": Generalized Additive Model"))				
+				Sys.time()
 				#run model with all points
 				mod.GAM.tps.FINAL<-gam(mod.form, data=dat_tps[[i]])
 				#store variable importance
@@ -1187,14 +1201,16 @@ if(n.cores==1){
 	   		    gc()
 				}
 			}
-			print(paste(Sys.time(),"Calculating final ensemble of models for ",(out.names[i])))
+			print(paste("Calculating final ensemble of models for ",(out.names[i])))
+			Sys.time()
 			#wrap up analysis and get final layer
 			#divide models by number ensembled
             pred.elev<-(pred.elev/OptX.mfit.wt.tot)
 			res.FINAL<-(res.FINAL/OptX.mfit.wt.tot)
 			
 			#calculate Sum of squares and resisdual sum of squares
-			print(paste(Sys.time(),"Calculating residuals of final model ensemble: ",(out.names[i])))
+			print(paste("Calculating residuals of final model ensemble: ",(out.names[i])))
+			Sys.time()
 			rss.m <- sum((res.FINAL) ^ 2)
 			tss <- sum((dat_tps[[i]]$resp - mean(dat_tps[[i]]$resp)) ^ 2)
 			l$residuals<- cbind((res.FINAL),dat_tps[[i]]$LONG,dat_tps[[i]]$LAT)
@@ -1207,7 +1223,8 @@ if(n.cores==1){
 			##################################################################################################
 			#DETERMINE IF TILING IS NEEDED
 			if(tps==TRUE) {
-				print(paste(Sys.time(),"Correcting model error: thin plate spline of residuals of ",(out.names[i])))
+				print(paste("Correcting model error: thin plate spline of residuals of ",(out.names[i])))
+				Sys.time()
 				#specify total extents
 				totalExt<-extent(rast_stack)
 				#specify n rows 
@@ -1243,12 +1260,14 @@ if(n.cores==1){
 				
 				#specify full cordinates for spatial subsampling
 				#perform TPS on each grid and then mosaic
-				print(paste(Sys.time(),"Thin plate splines of residuals will be tiled across ",(nRx*nCx)," tiles, layer: ", (out.names[i])))
+				print(paste("Thin plate splines of residuals will be tiled across ",(nRx*nCx)," tiles, layer: ", (out.names[i])))
+				Sys.time()
 				if(nRx*nCx>1){
 					Full.cords<-dat_tps[[1]][,c(n.covars,n.covars+1)]
 					pred_TPS_elev<-NULL
 					for (h in 1:(nRx*nCx)){
-						print(paste(Sys.time(),"Performing thin plate splines of residuals on tile",(h)))
+						print(paste("Performing thin plate splines of residuals on tile",(h)))
+						Sys.time()
 						gc()
 						#clip raster brick
 						b <- as(extent(new.df[[h]][1], new.df[[h]][2], new.df[[h]][3], new.df[[h]][4]), 'SpatialPolygons')
@@ -1292,10 +1311,12 @@ if(n.cores==1){
 				##################################################################################################
 				#feather right
 				feath.ras.TPS<-NULL
-				print("Feathering seams of thin plate splines")				
+				print("Feathering seams of thin plate splines")
+				Sys.time()
 				for (j in 1:nRx){
 				   for (h in 1:nCx){
-						print(paste(Sys.time(),"Feathering seams of thin plate splines for edge: ",j," and ",h))				
+						print(paste("Feathering seams of thin plate splines for edge: ",j," and ",h))				
+						Sys.time()
 						gc()
 						v<-(h+((j*nCx)-nCx))
 						if (h<nCx){
@@ -1386,7 +1407,7 @@ if(n.cores==1){
 			##################################################################################################
 			################################# part 5 finalize results ##################################
 			##################################################################################################
-			print(paste(Sys.time(),"Finalizing All Results!!!:",  (out.names[i])))			
+			print(paste(S"Finalizing All Results!!!:", (out.names[i]), Sys.time()))			
 			if(tps==TRUE) {
 				gc()
 				#calculate pred at normal scale, suming up kriging pred+res

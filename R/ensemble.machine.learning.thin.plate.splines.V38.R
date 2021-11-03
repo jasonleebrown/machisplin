@@ -814,7 +814,7 @@ if(n.cores==1){
 			l <- list()
 			print(paste("DOWNSCALING: ",(out.names[i])))
 			print(paste("Setting up datasets for k-fold crossvalidation: ",(out.names[i])))
-			Sys.time()
+			print(sys.time())
 			nfolds <- 10
 			kfolds <- kfold(dat_tps[[i]], nfolds)
 						
@@ -840,7 +840,7 @@ if(n.cores==1){
 			
 			####train models
 			print(paste("Running k-fold cross-validation for ",(out.names[i]),": Boosted Regresion Trees: Iteration",(v),"(of 10)"))
-            Sys.time()
+            print(sys.time())
 			gc()
 			mod.brt.tps.elev<- gbm.step(data=train, gbm.x = 2:(n.covars+1), gbm.y =1, family = "gaussian", tree.complexity = 25, learning.rate = 0.01, bag.fraction = 0.5, plot.main = FALSE, silent = TRUE)
 		    mod.rf.tps.elev<- randomForest(mod.form, data = train)
@@ -863,7 +863,7 @@ if(n.cores==1){
 			#RF
 			gc()
 			print(paste("Running k-fold cross-validation for ",(out.names[i]),": Random Forests: Iteration",(v),"(of 10)"))
-			Sys.time()
+			print(sys.time())
             pred.rf.obs<-predict(mod.rf.tps.elev, test, type="response", norm.votes=TRUE, predict.all=FALSE, proximity=FALSE, nodes=FALSE)
 			res.rf.elev<-test[,1]-pred.rf.obs
 			if(is.null(mfit.rf.full)==FALSE){
@@ -873,7 +873,7 @@ if(n.cores==1){
 				
 			#NN
 			print(paste("Running k-fold cross-validation for ",(out.names[i]),": Neural Networks: Iteration",(v),"(of 10)"))
-			Sys.time()
+			print(sys.time())
 			gc()
 			pred.nn1<-predict(mod.nn.tps.elev, test)*max2.resp
 			pred.nn2<-pred.nn1+min.resp
@@ -885,7 +885,7 @@ if(n.cores==1){
             
 			#MAR
 			print(paste("Running k-fold cross-validation for ",(out.names[i]),": Multivariate Adaptive Regression Splines: Iteration",(v),"(of 10)"))
-			Sys.time()
+			print(sys.time())
 			gc()
 			pred.mars.test<-predict(mod.mars.tps.elev,test)
 			res.mars.elev<-as.vector(test[,1]-pred.mars.test) 
@@ -897,7 +897,7 @@ if(n.cores==1){
 			#SVM
 			gc()
 			print(paste("Running k-fold cross-validation for ",(out.names[i]),": Support Vector Machines: Iteration",(v),"(of 10)"))
-			Sys.time()
+			print(sys.time())
 			pred.svm.test<-predict(mod.svm.tps.elev,test)
 			res.svm.elev<-test[,1]-pred.svm.test 
 			if(is.null(mfit.svm.full)==FALSE){
@@ -908,7 +908,7 @@ if(n.cores==1){
 			#GAM
 			gc()
 			print(paste("Running k-fold cross-validation for ",(out.names[i]),": Generalized Additive Models: Iteration",(v),"(of 10)"))
-			Sys.time()
+			print(sys.time())
 			pred.gam.test<-predict(mod.gam.tps.elev,test)
 			res.gam.elev<-as.vector(test[,1]-pred.gam.test)
 			if(is.null(mfit.gam.full)==FALSE){
@@ -1029,7 +1029,7 @@ if(n.cores==1){
 			######################################## part 2 run best model(s)  #################################
 			##################################################################################################
             print(paste("Running Final Models for Ensemble of ",(ku)," Algorithms"))
-			Sys.time()
+			print(sys.time())
 			pred.elev<- NULL
 			res.FINAL<-NULL
 			iter.mod<-0
@@ -1037,7 +1037,7 @@ if(n.cores==1){
 			  iter.mod<-iter.mod+1
    			  if (k=="n"){
 			  	print(paste("Final modeling of ",(out.names[i]),": Nueral Networks"))
-				Sys.time()
+				print(sys.time())
 			    ##### create dataset for nueral networks (resp has to have values between 0-1)
 			    gc()
 				trainNN.f<-dat_tps[[i]]
@@ -1076,7 +1076,7 @@ if(n.cores==1){
 			  if (k=="b"){
 				gc()
 			  	print(paste("Final modeling of ",(out.names[i]),": Boosted Regression Trees"))
-				Sys.time()
+				print(sys.time())
 				mod.run="BRT"
 				#run model with all points
 				mod.brt.tps.FINAL<- gbm.step(data=dat_tps[[i]], gbm.x = 2:(n.covars+1), gbm.y =1, family = "gaussian", tree.complexity = 5, learning.rate = 0.001, bag.fraction = 0.5, plot.main = FALSE, silent = TRUE)
@@ -1101,7 +1101,7 @@ if(n.cores==1){
 				gc()
 				mod.run="RF"
 				print(paste("Final modeling of ",(out.names[i]),": Random Forests"))
-				Sys.time()
+				print(sys.time())
 				#run model with all points
 				mod.rf.tps.FINAL<- randomForest(mod.form, data = dat_tps[[i]],importance = TRUE)
 				#store variable importance
@@ -1123,7 +1123,7 @@ if(n.cores==1){
 				gc()
 				mod.run="MARS"
 				print(paste("Final modeling of ",(out.names[i]),": Multivariate Adaptive Regression Splines"))
-				Sys.time()
+				print(sys.time())
 				#run model with all points
 				mod.MARS.tps.FINAL<-earth(mod.form,  data = dat_tps[[i]], nfold=10)
 				#store variable importance
@@ -1144,7 +1144,7 @@ if(n.cores==1){
 				gc()
 				mod.run="SVM"
 				print(paste("Final modeling of ",(out.names[i]),": Support Vector Machines"))
-				Sys.time()
+				print(sys.time())
 				#run model with all points
 				mod.SVM.tps.FINAL<-ksvm(mod.form, data=dat_tps[[i]])
 				#store variable importance
@@ -1184,7 +1184,7 @@ if(n.cores==1){
 				gc()
 				mod.run="GAM"
 				print(paste("Final modeling of ",(out.names[i]),": Generalized Additive Model"))				
-				Sys.time()
+				print(sys.time())
 				#run model with all points
 				mod.GAM.tps.FINAL<-gam(mod.form, data=dat_tps[[i]])
 				#store variable importance
@@ -1202,7 +1202,7 @@ if(n.cores==1){
 				}
 			}
 			print(paste("Calculating final ensemble of models for ",(out.names[i])))
-			Sys.time()
+			print(sys.time())
 			#wrap up analysis and get final layer
 			#divide models by number ensembled
             pred.elev<-(pred.elev/OptX.mfit.wt.tot)
@@ -1210,7 +1210,7 @@ if(n.cores==1){
 			
 			#calculate Sum of squares and resisdual sum of squares
 			print(paste("Calculating residuals of final model ensemble: ",(out.names[i])))
-			Sys.time()
+			print(sys.time())
 			rss.m <- sum((res.FINAL) ^ 2)
 			tss <- sum((dat_tps[[i]]$resp - mean(dat_tps[[i]]$resp)) ^ 2)
 			l$residuals<- cbind((res.FINAL),dat_tps[[i]]$LONG,dat_tps[[i]]$LAT)
@@ -1224,7 +1224,7 @@ if(n.cores==1){
 			#DETERMINE IF TILING IS NEEDED
 			if(tps==TRUE) {
 				print(paste("Correcting model error: thin plate spline of residuals of ",(out.names[i])))
-				Sys.time()
+				print(sys.time())
 				#specify total extents
 				totalExt<-extent(rast_stack)
 				#specify n rows 
@@ -1261,13 +1261,13 @@ if(n.cores==1){
 				#specify full cordinates for spatial subsampling
 				#perform TPS on each grid and then mosaic
 				print(paste("Thin plate splines of residuals will be tiled across ",(nRx*nCx)," tiles, layer: ", (out.names[i])))
-				Sys.time()
+				print(sys.time())
 				if(nRx*nCx>1){
 					Full.cords<-dat_tps[[1]][,c(n.covars,n.covars+1)]
 					pred_TPS_elev<-NULL
 					for (h in 1:(nRx*nCx)){
 						print(paste("Performing thin plate splines of residuals on tile",(h)))
-						Sys.time()
+						print(sys.time())
 						gc()
 						#clip raster brick
 						b <- as(extent(new.df[[h]][1], new.df[[h]][2], new.df[[h]][3], new.df[[h]][4]), 'SpatialPolygons')
@@ -1312,11 +1312,11 @@ if(n.cores==1){
 				#feather right
 				feath.ras.TPS<-NULL
 				print("Feathering seams of thin plate splines")
-				Sys.time()
+				print(sys.time())
 				for (j in 1:nRx){
 				   for (h in 1:nCx){
 						print(paste("Feathering seams of thin plate splines for edge: ",j," and ",h))				
-						Sys.time()
+						print(sys.time())
 						gc()
 						v<-(h+((j*nCx)-nCx))
 						if (h<nCx){

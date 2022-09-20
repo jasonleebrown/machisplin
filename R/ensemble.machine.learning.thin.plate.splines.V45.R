@@ -558,10 +558,10 @@ if(n.cores>1){
 				#specify n cols 
 				nc.in<-ncol(rast_stack)
 				#specify n row blocks
-				nrB<-nr.in/2000
+				nrB<-nr.in/3000
 				nRx<-ceiling(nrB)
 				#specify n col blocks
-				ncB<-nc.in/2000
+				ncB<-nc.in/3000
 				nCx<-ceiling(ncB)
 				#specify lat distance
 				longDist<-((totalExt[2]-totalExt[1])/nCx)
@@ -1277,10 +1277,10 @@ if(n.cores==1){
 				#specify n cols 
 				nc.in<-ncol(rast_stack)
 				#specify n row blocks,3000
-				nrB<-nr.in/2000
+				nrB<-nr.in/3000
 				nRx<-ceiling(nrB)
 				#specify n col blocks,3000
-				ncB<-nc.in/2000
+				ncB<-nc.in/3000
 				nCx<-ceiling(ncB)
 				#specify lat distance
 				longDist<-((totalExt[2]-totalExt[1])/nCx)
@@ -1313,6 +1313,8 @@ if(n.cores==1){
 					pred_TPS_elev<-NULL
 					for (h in 1:(nRx*nCx)){
 						gc()
+						print(paste("Performing thin plate splines of residuals on tile",(h)))
+						print(paste("                                         ",Sys.time()))
 						#clip raster brick
 						b <- as(extent(new.df[[h]][1], new.df[[h]][2], new.df[[h]][3], new.df[[h]][4]), 'SpatialPolygons')
 						c <- as(extent(new.df2[[h]][1], new.df2[[h]][2], new.df2[[h]][3], new.df2[[h]][4]), 'SpatialPolygons')

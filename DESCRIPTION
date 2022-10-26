@@ -3,7 +3,7 @@ Title: Interpolation of noisy multi-variate data using machine learning ensembli
 Version: 0.9.102622
 Authors@R: person("Jason", "Brown", email = "jason.brown@siu.edu", role = c("aut", "cre"))
 Description: An R package for interpolation of noisy multi-variate data through comprehensive statistical analyses using thin-plate-smoothing splines and machine learning ensembling. This package is a free open-source machine learning analog to the expensive ANUSPLIN software. 
-Depends: R (>= 3.3.0), snowfall, terra
+Depends: R (>= 3.3.0), snowfall, raster
 License: GPL-3
 Encoding: UTF-8
 LazyData: false

@@ -17,7 +17,7 @@
 #' @examples
 #' 
 #' library(MACHISPLIN)
-#' library(raster)
+#' library(terra)
 #' 
 #' ##load spatial data with (coordinates named exactly as 'long' and 'lat') and any number of layers to downscale
 #' data(sampling)
@@ -25,11 +25,11 @@
 #' 
 #' ## load high-resolution covariates rasters
 #' 
-#' ALT = raster(system.file("extdata", "alt.tif", package="MACHISPLIN"))
+#' ALT = rast(system.file("extdata", "alt.tif", package="MACHISPLIN"))
 #' 
-#' SLOPE = raster(system.file("extdata", "slope.tif", package="MACHISPLIN"))
+#' SLOPE = rast(system.file("extdata", "slope.tif", package="MACHISPLIN"))
 #' 
-#' TWI = raster(system.file("extdata", "TWI.tif", package="MACHISPLIN"))
+#' TWI = rast(system.file("extdata", "TWI.tif", package="MACHISPLIN"))
 #' 
 #' ##function input: raster stack of covariates
 #' raster_stack<-stack(ALT,SLOPE,TWI)

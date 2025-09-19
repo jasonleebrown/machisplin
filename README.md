@@ -1,16 +1,16 @@
 ![Alt text](https://raw.githubusercontent.com/jasonleebrown/machisplin/master/MACHISPLIN_LOGOv2.jpg?raw=true "Title")
 
 # machisplin 2.0
-September 19, 2025
+<p> September 19, 2025</p> 
 
-I am pleased to announce that MACHISPLIN 2.0 is released!  
-Main features:
--updated to work in the Terra infrastructure
-(rgeos, raster, dismo, rgdal... all have been retired)
--fixed several bugs associated with thin-plate splines 
+<p> I am pleased to announce that MACHISPLIN 2.0 has been released! </p>  
+<p> Main features: </p>
+<p> -updated to work in the Terra infrastructure
+(rgeos, raster, dismo, rgdal... all have been retired) </p>
+<p> -fixed several bugs associated with thin-plate splines </p> 
 
-Known bugs:
-- multicore support is not currently functional
+ <p>Known bugs: </p>
+ <p>- Multicore support is not currently functional. I am debating abandoning this entirely, as I primarily use it for single- or dual-core analyses due to the massive RAM requirements for large projects. </p>
 
 # machisplin
 An R package for interpolation of noisy multivariate data through comprehensive statistical analyses using thin-plate-smoothing splines and machine learning ensembling.  This package is a free open-source machine learning analog to the expensive ANUSPLIN software. 

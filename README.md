@@ -22,9 +22,9 @@ library(MACHISPLIN)
 Mydata<-sampling
 
 #rasters to use as high resolution co-variates for downscaling
-ALT = raster(system.file("extdata", "alt.tif", package="MACHISPLIN"))
-SLOPE = raster(system.file("extdata", "slope.tif", package="MACHISPLIN"))
-TWI = raster(system.file("extdata", "TWI.tif", package="MACHISPLIN"))
+ALT = rast(system.file("extdata", "alt.tif", package="MACHISPLIN"))
+SLOPE = rast(system.file("extdata", "slope.tif", package="MACHISPLIN"))
+TWI = rast(system.file("extdata", "TWI.tif", package="MACHISPLIN"))
 ```
 If needed, see guide below to convert raster GIS data for use as in 'MACHISPLIN'
 
@@ -55,7 +55,7 @@ My biggest concern with blocky interpolated surfaces, in addition to looking bad
 ### Example 1 - using provided datasets
 ```markdown
 library(MACHISPLIN)
-library(raster)
+library(terra)
 
 ##load spatial data with (coordinates named exactly as 'long' and 'lat') and any number of layers to downscale
 ##note this can be from a raster of lower resolution climate data or point weather station data
@@ -63,15 +63,15 @@ data(sampling)
 Mydata<-sampling
 
 #load rasters to use as high resolution co-variates for downscaling
-ALT = raster(system.file("extdata", "alt.tif", package="MACHISPLIN"))
-SLOPE = raster(system.file("extdata", "slope.tif", package="MACHISPLIN"))
-TWI = raster(system.file("extdata", "TWI.tif", package="MACHISPLIN"))
+ALT = rast(system.file("extdata", "alt.tif", package="MACHISPLIN"))
+SLOPE = rast(system.file("extdata", "slope.tif", package="MACHISPLIN"))
+TWI = rast(system.file("extdata", "TWI.tif", package="MACHISPLIN"))
 
 # function input: raster brick of covarites
-raster_stack<-stack(ALT,SLOPE,TWI)
+raster_stack<-c(ALT,SLOPE,TWI)
 
 #run an ensemble machine learning thin plate spline 
-interp.rast<-machisplin.mltps(int.values=Mydata, covar.ras=raster_stack, smooth.outputs.only=FALSE, n.cores=2)
+interp.rast<-machisplin.mltps(int.values=Mydata, covar.ras=raster_stack, smooth.outputs.only=FALSE)
 
 machisplin.write.geotiff(mltps.in=interp.rast)
 machisplin.write.residuals(mltps.in=interp.rast)
@@ -87,15 +87,15 @@ library(raster)
 Mydata<-read.delim("sampling.csv", sep=",", h=T)
 
 #load rasters to use as high resolution co-variates for downscaling
-ALT = raster("SRTM30m.tif")
-SLOPE = raster("ln_slope.tif")
-TWI = raster("TWI.tif")
+ALT = rast("SRTM30m.tif")
+SLOPE = rast("ln_slope.tif")
+TWI = rast("TWI.tif")
 
 # function input: raster brick of covarites
-raster_stack<-stack(ALT,SLOPE,TWI)
+raster_stack<-c(ALT,SLOPE,TWI)
 
 #run an ensemble machine learning thin plate spline 
-interp.rast<-machisplin.mltps(int.values=Mydata, covar.ras=raster_stack, smooth.outputs.only=TRUE, n.cores=2, tps=FALSE)
+interp.rast<-machisplin.mltps(int.values=Mydata, covar.ras=raster_stack, smooth.outputs.only=TRUE, tps=TRUE)
 
 #to plot results (change number to select different output raster)
 plot(interp.rast[[1]]$final)
@@ -121,30 +121,30 @@ These need to be a series of high resolution raster combinded into a raster stac
 
 ### Importing rasters into R
 ```markdown
-library(raster)
+library(terra)
 
 ##rasters to downscale (= make higher resolution), here they 'Tiff' rasters are in base working directory
-BIO1 = raster("bio1.tif")
-BIO2 = raster("bio2.tif")
-BIO12 = raster("bio12.tif")
-BIO15= raster("bio15.tif")
+BIO1 = rast("bio1.tif")
+BIO2 = rast("bio2.tif")
+BIO12 = rast("bio12.tif")
+BIO15= rast("bio15.tif")
 
 ##high-resolution covariate rasters
-ALT = raster("SRTM30m.tif")
-SLOPE = raster("ln_slope.tif")
-TWI = raster("TWI.tif")
+ALT = rast("SRTM30m.tif")
+SLOPE = rast("ln_slope.tif")
+TWI = rast("TWI.tif")
 
 ```
 ### Clipping the extent of rasters in R
 ```markdown
 ##create raster stack to speed process up 
-raster_interp_layers<-stack(BIO1, BIO2, BIO12, BIO15)
-raster_covar_layers<-stack(ALT, SLOPE, TWI)
+raster_interp_layers<-c(BIO1, BIO2, BIO12, BIO15)
+raster_covar_layers<-c(ALT, SLOPE, TWI)
 
 ##define extent for which you will clip data to. These values will reflect the spatial area of analyses and the area where you will create high resolution variables.    
 ##I highly recommend determining these values from a GIS (ArcGIS or Google Earth).
 ##extent order input below is: xmin, xmax, ymin, yma
-e.in <- extent(-160, 10, 30, 60)
+e.in <- terra::ext(-160, 10, 30, 60)
 
 ##perform crop function to clip to input extent
 interp_layers <- crop(raster_interp_layers, e.in)	

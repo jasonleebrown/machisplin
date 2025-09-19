@@ -122,7 +122,7 @@ interp.rast[[1]]$var.imp
 interp.rast[[1]]$summary
 ```
 
-###  Example 3 
+###  Example 3 - a loop
 a loop for difficult/large datasets
 ```markdown
 library(MACHISPLIN)

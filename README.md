@@ -98,7 +98,7 @@ library(terra)
 # Import a csv as shapefile:
 Mydata<-read.delim("sampling.csv", sep=",", h=T)
 
-#load rasters to use as high-resolution covariates for downscaling
+# load rasters to use as high-resolution covariates for downscaling
 ALT = rast("SRTM30m.tif")
 SLOPE = rast("ln_slope.tif")
 TWI = rast("TWI.tif")
@@ -106,19 +106,19 @@ TWI = rast("TWI.tif")
 # function input: raster brick of covariates
 raster_stack<-c(ALT,SLOPE,TWI)
 
-#run an ensemble machine learning thin plate spline 
+# run an ensemble machine learning thin plate spline 
 interp.rast<-machisplin.mltps(int.values=Mydata, covar.ras=raster_stack, smooth.outputs.only=TRUE, tps=TRUE)
 
-#to plot results (change number to select different output raster)
+# to plot results (change number to select different output raster)
 plot(interp.rast[[1]]$final)
 
-#to view residuals (change number to select different output raster)
+# to view residuals (change number to select different output raster)
 interp.rast[[1]]$residuals
 
-#to view model loadings
+# to view model loadings
 interp.rast[[1]]$var.imp
 
-#to view other model parameters and other parameters
+# to view other model parameters and other parameters
 interp.rast[[1]]$summary
 ```
 
@@ -131,7 +131,7 @@ library(terra)
 # Import a csv as shapefile:
 Mydata<-read.delim("sampling.csv", sep=",", h=T)
  
-#load rasters to use as high resolution co-variates for downscaling
+# load rasters to use as high resolution co-variates for downscaling
 ALT = terra::rast("SRTM30m.tif")
 SLOPE = terra::rast("ln_slope.tif")
 ASPECT = terra::rast("aspect.tif")
@@ -144,7 +144,7 @@ raster_stack<-terra::c(ALT,SLOPE,TWI,GEOMORPH, ASPECT)
 # n of iterpolations - subtrack x and y
 i.lyrs<-ncol(Mydata)-2
 
-# a simple-loop to iterate through your datafile, as it finishes layers - it saves them.  This is nice in the event of errors 
+# a simple loop to iterate through your input data, and as it finishes layers, it saves them.  This is nice in the event of errors 
 for (i in 1:i.lyrs){
  	  Mydat<-cbind(Mydata[1:2],Mydata[i+2])
        interp.rast<-machisplin.mltps(int.values=Mydat, covar.ras=raster_stack, smooth.outputs.only=TRUE, tps=TRUE)
@@ -155,19 +155,19 @@ for (i in 1:i.lyrs){
 ```
 
 ## Getting environmental data formatted for ‘MACHISPLIN’
-You need two sets of datafiles.  1. the layers that will be interpolated and 2. higher resolution covariates that will be use to downscale interpolation layers. 
+You need two sets of data files.  1. the layers that will be interpolated and 2. higher resolution covariates that will be use to downscale interpolation layers. 
 
-### 1. Layers to be interpoloated 
-This is a single data file where the first two columns are longitude and latitude (x and y) in that order.  The following columns represent the corresponding values of the data layers that will be interpoloated.   This can a single layer (=1 column) or a dozen (=12 columns). These values can be obtained from field data (e.g. weather station measurements) or directly from a lower resolution raster.
+### 1. Layers to be interpolated 
+This is a single data file where the first two columns are longitude and latitude (x and y) in that order.  The following columns represent the corresponding values of the data layers that will be interpolated.   This can a single layer (=1 column) or a dozen (=12 columns). These values can be obtained from field data (e.g. weather station measurements) or directly from a lower resolution raster.
 
 ### 2. High-resolution covariates
-These need to be a series of high resolution raster combinded into a raster stack.   All rasters must be the same: resolution, projection and extent.  Typically these are microtopgraphic layers.  
+These need to be a series of high-resolution raster combined into a raster stack.   All rasters must be the same: resolution, projection and extent.  Typically, these are microtopographic layers.  
 
 ### Importing rasters into R
 ```markdown
 library(terra)
 
-##rasters to downscale (= make higher resolution), here they 'Tiff' rasters are in base working directory
+##rasters to downscale (= make higher resolution), here they 'Tiff' rasters are in the base working directory
 BIO1 = rast("bio1.tif")
 BIO2 = rast("bio2.tif")
 BIO12 = rast("bio12.tif")

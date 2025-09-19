@@ -145,7 +145,7 @@ raster_stack<-terra::c(ALT,SLOPE,TWI,GEOMORPH, ASPECT)
 i.lyrs<-ncol(Mydata)-2
 
 # a simple-loop to iterate through your datafile, as it finishes layers - it saves them.  This is nice in the event of errors 
-for (i in i.lyrs){
+for (i in 1:i.lyrs){
  	  Mydat<-cbind(Mydata[1:2],Mydata[i+2])
        interp.rast<-machisplin.mltps(int.values=Mydat, covar.ras=raster_stack, smooth.outputs.only=TRUE, tps=TRUE)
  	     machisplin.write.geotiff(mltps.in=interp.rast)

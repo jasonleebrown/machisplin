@@ -69,12 +69,12 @@ My biggest concern with blocky interpolated surfaces, in addition to looking bad
 library(MACHISPLIN)
 library(terra)
 
-##load spatial data with (coordinates named exactly as 'long' and 'lat') and any number of layers to downscale
-##note this can be from a raster of lower resolution climate data or point weather station data
+## load spatial data with (coordinates named exactly as 'long' and 'lat') and any number of layers to downscale
+## note this can be from a raster of lower resolution climate data or point weather station data
 data(sampling)
 Mydata<-sampling
 
-#load rasters to use as high-resolution covariates for downscaling
+# load rasters to use as high-resolution covariates for downscaling
 ALT = rast(system.file("extdata", "alt.tif", package="MACHISPLIN"))
 SLOPE = rast(system.file("extdata", "slope.tif", package="MACHISPLIN"))
 TWI = rast(system.file("extdata", "TWI.tif", package="MACHISPLIN"))
@@ -82,7 +82,7 @@ TWI = rast(system.file("extdata", "TWI.tif", package="MACHISPLIN"))
 # function input: raster brick of covariates
 raster_stack<-c(ALT,SLOPE,TWI)
 
-#run an ensemble machine learning thin plate spline 
+# run an ensemble machine learning thin plate spline 
 interp.rast<-machisplin.mltps(int.values=Mydata, covar.ras=raster_stack, smooth.outputs.only=FALSE)
 
 machisplin.write.geotiff(mltps.in=interp.rast)
@@ -93,7 +93,7 @@ machisplin.write.loadings(mltps.in=interp.rast)
 see below for help formatting raster/environment data. 
 ```markdown
 library(MACHISPLIN)
-library(raster)
+library(terra)
 
 # Import a csv as shapefile:
 Mydata<-read.delim("sampling.csv", sep=",", h=T)
@@ -120,6 +120,38 @@ interp.rast[[1]]$var.imp
 
 #to view other model parameters and other parameters
 interp.rast[[1]]$summary
+```
+
+###  Example 3 
+a loop for difficult/large datasets
+```markdown
+library(MACHISPLIN)
+library(terra)
+ 
+# Import a csv as shapefile:
+Mydata<-read.delim("sampling.csv", sep=",", h=T)
+ 
+#load rasters to use as high resolution co-variates for downscaling
+ALT = terra::rast("SRTM30m.tif")
+SLOPE = terra::rast("ln_slope.tif")
+ASPECT = terra::rast("aspect.tif")
+GEOMORPH = terra::rast("geomorphons.tif")
+TWI = terra::rast("TWI.tif")
+
+# function input: raster brick of covarites
+raster_stack<-terra::c(ALT,SLOPE,TWI,GEOMORPH, ASPECT)
+
+# n of iterpolations - subtrack x and y
+i.lyrs<-ncol(Mydata)-2
+
+# a simple-loop to iterate through your datafile, as it finishes layers - it saves them.  This is nice in the event of errors 
+for (i in i.lyrs){
+ 	  Mydat<-cbind(Mydata[1:2],Mydata[i+2])
+       interp.rast<-machisplin.mltps(int.values=Mydat, covar.ras=raster_stack, smooth.outputs.only=TRUE, tps=TRUE)
+ 	     machisplin.write.geotiff(mltps.in=interp.rast)
+ 	     machisplin.write.residuals(mltps.in=interp.rast)
+       machisplin.write.loadings(mltps.in=interp.rast)
+   }
 ```
 
 ## Getting environmental data formatted for ‘MACHISPLIN’

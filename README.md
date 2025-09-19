@@ -1,7 +1,7 @@
 ![Alt text](https://raw.githubusercontent.com/jasonleebrown/machisplin/master/MACHISPLIN_LOGOv2.jpg?raw=true "Title")
 
 # machisplin
-An R package for interpolation of noisy multi-variate data through comprehensive statistical analyses using thin-plate-smoothing splines and machine learning ensembling.  This package is a free open-source machine learning analog to the expensive ANUSPLIN software. 
+An R package for interpolation of noisy multivariate data through comprehensive statistical analyses using thin-plate-smoothing splines and machine learning ensembling.  This package is a free open-source machine learning analog to the expensive ANUSPLIN software. 
 
 ## To install, open R and type the following:
 ```markdown
@@ -14,14 +14,14 @@ install_github("jasonleebrown/machisplin")
 [We can help you sort out issues, maybe](https://www.jasonleebrown.org/get-in-touch)
 
 ## Input Data formats
-To explore data format for input data, see:
+To explore the data format for input data, see:
 ```markdown
 library(raster)
 library(MACHISPLIN)
 ##data format that will be interpolated, each column is a different dataset
 Mydata<-sampling
 
-#rasters to use as high resolution co-variates for downscaling
+#rasters to use as high-resolution covariates for downscaling
 ALT = rast(system.file("extdata", "alt.tif", package="MACHISPLIN"))
 SLOPE = rast(system.file("extdata", "slope.tif", package="MACHISPLIN"))
 TWI = rast(system.file("extdata", "TWI.tif", package="MACHISPLIN"))
@@ -30,9 +30,9 @@ If needed, see guide below to convert raster GIS data for use as in 'MACHISPLIN'
 
 
 ## What does it do?
-This R package interpolates noisy multi-variate data through machine learning* ensembling of up to six algorithms: boosted regression trees (BRT), neural networks (NN); generalized additive model (GAM), multivariate adaptive regression splines (MARS), support vector machines (SVM), and random forests (RF). The _machisplin.mltps_ function simultaneously evaluates different combinations of the six algorithms to predict the input data. During model tuning, each algorithm is systematically weighted from 0-1 and the fit of the ensembled model is evaluated. The best performing model is determined through k-fold cross validation (k=10) and the model that has the lowest residual sum of squares of test data is chosen. After determining the best model algorithms and weights, a final model is created using the full training dataset. Residuals of the final model are calculated from the full training dataset and these values interpolated using thin-plate-smoothing splines. This creates a continuous error surface and is used to correct most the residual error in the final ensemble model. 
+This R package interpolates noisy multivariate data through machine learning* ensembling of up to six algorithms: boosted regression trees (BRT), neural networks (NN); generalized additive model (GAM), multivariate adaptive regression splines (MARS), support vector machines (SVM), and random forests (RF). The _machisplin.mltps_ function simultaneously evaluates different combinations of the six algorithms to predict the input data. During model tuning, each algorithm is systematically weighted from 0-1, and the fit of the ensembled model is evaluated. The best performing model is determined through k-fold cross-validation (k=10), and the model that has the lowest residual sum of squares of test data is chosen. After determining the best model algorithms and weights, a final model is created using the full training dataset. Residuals of the final model are calculated from the full training dataset and these values are interpolated using thin-plate-smoothing splines. This creates a continuous error surface and is used to correct most the residual error in the final ensemble model. 
 
-This package is a free open-source machine learning analog to the expensive ANUSPLIN software. To output final R2 values, model weights, algorithm(s) used, and rasters for use in GIS; use the _machisplin.write.geotiff_ function. To output residuals use _machisplin.write.residuals_ and to output model loadings use _machispline.write.loadings_. *just to clarify, GAMs are not a machine learning method
+This package is a free open-source machine learning analog to the expensive ANUSPLIN software. To output final R2 values, model weights, algorithm(s) used, and rasters for use in GIS; use the _machisplin.write.geotiff_ function. To output residuals, use _machisplin.write.residuals_ and to output model loadings use _machispline.write.loadings_. *just to clarify, GAMs are not a machine learning method
 
 ![Alt text](https://raw.githubusercontent.com/jasonleebrown/machisplin/master/Slide20.JPG?raw=true "Title")
 Overview of process
@@ -46,10 +46,10 @@ Example of the results (all with R2>0.99).
 ## Update: New Parameter (1/15/2021): smooth.outputs.only
 I recently added a new parameter 'smooth.outputs.only' to the _machisplin.mltps_ function to address an issue with occasionally blocky results.  If 'smooth.outputs.only=TRUE', this removes Boosted Regressive Trees and Random Forests from the modeling algorithms. Both algorithms occasionally produce blocky outputs (see example below). I recommend first using 'smooth.outputs.only=FALSE' for the initial analyses. If you are unhappy with the visual appearance of the created layers, consider 'smooth.outputs.only=TRUE'. Be aware if results are blocky and you exclude these two algorithms, then the predictive performance might decline (as before exclusion, one or both contributed to the best model). 
 
-My biggest concern with blocky interpolated surfaces, in addition to looking bad, is the blockiness itself might be the result of overfitting to noise in the training datasets. In most cases, I think smooth continuous surfaces best characterize most spatial processes. Thus, smoother results might better represent the truth, despite slightly lower performances values. 
+My biggest concern with blocky interpolated surfaces, in addition to looking bad, is that the blockiness itself might be the result of overfitting to noise in the training datasets. In most cases, I think smooth, continuous surfaces best characterize most spatial processes. Thus, smoother results might better represent the truth, despite slightly lower performance values. 
 
 ![Alt text](https://raw.githubusercontent.com/jasonleebrown/machisplin/master/machisplinParm.jpg?raw=true "Title")
-**BIO13 downscaled in northern Madagascar: example of 'smooth.outputs.only' parameter.**  Note that the final results that are merged with thin-plate-splines (TPS) error surfaces were better using the 'smooth.outputs.only=TRUE' (vs. 'smooth.outputs.only=FALSE').  In this case, the TPS could better 'fix' the 'smooth.outputs.only=TRUE' ensemble models.  In contrast, the 'smooth.outputs.only=FALSE' ensemble models (without TPS) had a higher r2.  This can be due to the TPS not able to correct error in blocky models. In this example (and all where r2 ensemble > r2 ensemble + TPS), the final model produced was the r2 ensemble (w/o TPS).  However, in all cases, the raw ensemble of 'smooth.outputs.only=FALSE' will always be lower than, or equal to, the model run with 'smooth.outputs.only=TRUE'.   
+**BIO13 downscaled in northern Madagascar: example of 'smooth.outputs.only' parameter.**  Note that the final results that are merged with thin-plate-splines (TPS) error surfaces were better using the 'smooth.outputs.only=TRUE' (vs. 'smooth.outputs.only=FALSE').  In this case, the TPS could better 'fix' the 'smooth.outputs.only=TRUE' ensemble models.  In contrast, the 'smooth.outputs.only=FALSE' ensemble models (without TPS) had a higher r2.  This can be due to the TPS not being able to correct error in blocky models. In this example (and all where r2 ensemble > r2 ensemble + TPS), the final model produced was the r2 ensemble (w/o TPS).  However, in all cases, the raw ensemble of 'smooth.outputs.only=FALSE' will always be lower than, or equal to, the model run with 'smooth.outputs.only=TRUE'.   
 
 
 ### Example 1 - using provided datasets
@@ -62,12 +62,12 @@ library(terra)
 data(sampling)
 Mydata<-sampling
 
-#load rasters to use as high resolution co-variates for downscaling
+#load rasters to use as high-resolution covariates for downscaling
 ALT = rast(system.file("extdata", "alt.tif", package="MACHISPLIN"))
 SLOPE = rast(system.file("extdata", "slope.tif", package="MACHISPLIN"))
 TWI = rast(system.file("extdata", "TWI.tif", package="MACHISPLIN"))
 
-# function input: raster brick of covarites
+# function input: raster brick of covariates
 raster_stack<-c(ALT,SLOPE,TWI)
 
 #run an ensemble machine learning thin plate spline 
@@ -78,7 +78,7 @@ machisplin.write.residuals(mltps.in=interp.rast)
 machisplin.write.loadings(mltps.in=interp.rast)
 ```
 ### Example 2 - typical workflow
-see below for help formating raster/environment data. 
+see below for help formatting raster/environment data. 
 ```markdown
 library(MACHISPLIN)
 library(raster)
@@ -86,12 +86,12 @@ library(raster)
 # Import a csv as shapefile:
 Mydata<-read.delim("sampling.csv", sep=",", h=T)
 
-#load rasters to use as high resolution co-variates for downscaling
+#load rasters to use as high-resolution covariates for downscaling
 ALT = rast("SRTM30m.tif")
 SLOPE = rast("ln_slope.tif")
 TWI = rast("TWI.tif")
 
-# function input: raster brick of covarites
+# function input: raster brick of covariates
 raster_stack<-c(ALT,SLOPE,TWI)
 
 #run an ensemble machine learning thin plate spline 
@@ -175,7 +175,7 @@ Now use the 'InInterp' and 'raster_covar_layers' in the 'machisplin.mltps' funct
 
 # Need help with the high-resolution topography data? 
 1. Get a high-resolution elevation model
--Download 30m or 90m elevation data and mosaic tile to single file in GIS
+-Download 30m or 90m elevation data and mosaic tile to a single file in GIS
 https://earthexplorer.usgs.gov/ (requires registration)
 
 2. Use the high-resolution elevation model to create topography layers:

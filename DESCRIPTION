@@ -1,11 +1,11 @@
 Package: MACHISPLIN
 Title: Interpolation of noisy multi-variate data using machine learning ensembling
-Version: 0.9.102622
+Version: 2.0.09182025
 Authors@R: person("Jason", "Brown", email = "jason.brown@siu.edu", role = c("aut", "cre"))
 Description: An R package for interpolation of noisy multi-variate data through comprehensive statistical analyses using thin-plate-smoothing splines and machine learning ensembling. This package is a free open-source machine learning analog to the expensive ANUSPLIN software. 
-Depends: R (>= 3.3.0), snowfall, raster
+Depends: R (> 4.3.0)
 License: GPL-3
 Encoding: UTF-8
 LazyData: false
-RoxygenNote: 7.1.1
-Imports: maptools, sp, rgdal, fields, snow, dismo, randomForest, earth, kernlab, mgcv, nnet, optimx, breakDown, NeuralNetTools, gbm, raster
+RoxygenNote: 7.3.3
+Imports: sp, fields, randomForest, earth, kernlab, mgcv, nnet, optimx, breakDown, NeuralNetTools, gbm, terra

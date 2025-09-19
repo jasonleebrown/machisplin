@@ -1,5 +1,17 @@
 ![Alt text](https://raw.githubusercontent.com/jasonleebrown/machisplin/master/MACHISPLIN_LOGOv2.jpg?raw=true "Title")
 
+# machisplin 2.0
+September 19, 2025
+
+I am pleased to announce that MACHISPLIN 2.0 is released!  
+Main features:
+-updated to work in the Terra infrastructure
+(rgeos, raster, dismo, rgdal... all have been retired)
+-fixed several bugs associated with thin-plate splines 
+
+Known bugs:
+- multicore support is not currently functional
+
 # machisplin
 An R package for interpolation of noisy multivariate data through comprehensive statistical analyses using thin-plate-smoothing splines and machine learning ensembling.  This package is a free open-source machine learning analog to the expensive ANUSPLIN software. 
 

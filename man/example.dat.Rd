@@ -37,6 +37,6 @@ SLOPE = rast(system.file("extdata", "slope.tif", package="MACHISPLIN"))
 TWI = rast(system.file("extdata", "TWI.tif", package="MACHISPLIN"))
 
 ##function input: raster stack of covariates
-raster_stack<-stack(ALT,SLOPE,TWI)
+raster_stack<-c(ALT,SLOPE,TWI)
 }
 \keyword{datasets}

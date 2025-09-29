@@ -199,19 +199,18 @@ j.lyrs<-terra::nlyrs(tile$rast)
 
 # a simple loop to iterate through your tiled datafile, and as it finishes layers, it saves them.  This is nice in the event of errors 
 for (i in 1:i.lyrs){
-    for (j in 1:j.lyrs){
+   for (j in 1:j.lyrs){
  	  	Mydat<-cbind(Mydata[1:2],Mydata[i+2])
-MyRast<-tile$rast[[j]]
-  interp.out<-machisplin.mltps(int.values=Mydat, covar.ras=MyRast, smooth.outputs.only=TRUE, tps=TRUE)
-interp.rast[[j]]<- interp.out[[1]]$final
+        MyRast<-tile$rast[[j]]
+        interp.out<-machisplin.mltps(int.values=Mydat, covar.ras=MyRast, smooth.outputs.only=TRUE, tps=TRUE)
+        interp.rast[[j]]<- interp.out[[1]]$final
  	 	}   
   final.inter<-machisplin.tiles.merge(rast.in=interp.rast, rast.full.ext=ALT, in.ncol=tile$nC, in.nrow=tile$nR)
-	 machisplin.write.geotiff(mltps.in=final.inter)
+  machisplin.write.geotiff(mltps.in=final.inter)
   machisplin.write.residuals(mltps.in=final.inter)
   machisplin.write.loadings(mltps.in=final.inter)
-	  }
+}
 ```
-
 
 
 ## Getting environmental data formatted for ‘MACHISPLIN’

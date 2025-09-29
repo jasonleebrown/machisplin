@@ -154,6 +154,64 @@ for (i in 1:i.lyrs){
    }
 ```
 
+###  Example 3 - tiling the input landscape/data to downscale very large landscapes
+a loop for difficult/large datasets
+```markdown
+library(MACHISPLIN)
+library(terra)
+ 
+# Import a csv as shapefile:
+Mydata<-read.delim("sampling.csv", sep=",", h=T)
+ 
+# load rasters to use as high resolution co-variates for downscaling
+ALT = terra::rast("SRTM30m.tif")
+SLOPE = terra::rast("ln_slope.tif")
+ASPECT = terra::rast("aspect.tif")
+GEOMORPH = terra::rast("geomorphons.tif")
+TWI = terra::rast("TWI.tif")
+
+# function input: raster brick of covarites
+raster_stack<-terra::c(ALT,SLOPE,TWI,GEOMORPH, ASPECT)
+
+#sub-divide landscape into smaller units to facilite downscaling
+tile<-machisplin.tiles.create(rast.in= raster_stack, int.values=Mydata,out.ncol=2, out.nrow=2, feather.d=50)
+ 
+#run an ensemble machine learning thin plate spline - tile 1:4
+interp.rast.1<-machisplin.mltps(int.values=tile$dat[[1]], covar.ras=tile$rast[[1]], tps=TRUE)
+interp.rast.2<-machisplin.mltps(int.values=tile$dat[[2]], covar.ras=tile$rast[[2]], tps=TRUE)
+interp.rast.3<-machisplin.mltps(int.values=tile$dat[[3]], covar.ras=tile$rast[[3]], tps=TRUE)
+interp.rast.4<-machisplin.mltps(int.values=tile$dat[[4]], covar.ras=tile$rast[[4]], tps=TRUE)
+ 
+#note that these rasters MUST be ordered to match the layout matching machisplin.tiles.id and MUST be stored as shown below (with a space between stored raster (final.raster.name [[1]], and NOT as: final.raster.name[[1]]). 
+final.rast [[1]]<-interp.rast.1[[1]]$final
+final.rast [[2]]<-interp.rast.2[[1]]$final
+final.rast [[3]]<-interp.rast.3[[1]]$final
+final.rast [[4]]<-interp.rast.4[[1]]$final
+ 
+ 
+# n of iterpolations - subtrack x and y
+i.lyrs<-ncol(tile$dat)-2
+
+# n of tiles to loop through
+j.lyrs<-terra::nlyrs(tile$rast)
+
+# a simple loop to iterate through your tiled datafile, and as it finishes layers, it saves them.  This is nice in the event of errors 
+for (i in 1:i.lyrs){
+    for (j in 1:j.lyrs){
+ 	  	Mydat<-cbind(Mydata[1:2],Mydata[i+2])
+MyRast<-tile$rast[[j]]
+  interp.out<-machisplin.mltps(int.values=Mydat, covar.ras=MyRast, smooth.outputs.only=TRUE, tps=TRUE)
+interp.rast[[j]]<- interp.out[[1]]$final
+ 	 	}   
+  final.inter<-machisplin.tiles.merge(rast.in=interp.rast, rast.full.ext=ALT, in.ncol=tile$nC, in.nrow=tile$nR)
+	 machisplin.write.geotiff(mltps.in=final.inter)
+  machisplin.write.residuals(mltps.in=final.inter)
+  machisplin.write.loadings(mltps.in=final.inter)
+	  }
+```
+
+
+
 ## Getting environmental data formatted for ‘MACHISPLIN’
 You need two sets of data files.  1. the layers that will be interpolated and 2. higher resolution covariates that will be use to downscale interpolation layers. 
 

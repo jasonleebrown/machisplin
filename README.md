@@ -176,14 +176,17 @@ raster_stack<-terra::c(ALT,SLOPE,TWI,GEOMORPH, ASPECT)
 
 # sub-divide landscape into smaller units to facilite downscaling
 tile<-machisplin.tiles.create(rast.in= raster_stack, int.values=Mydata,out.ncol=2, out.nrow=2, feather.d=50)
- 
+
 # run an ensemble machine learning thin plate spline - tile 1:4
 interp.rast.1<-machisplin.mltps(int.values=tile$dat[[1]], covar.ras=tile$rast[[1]], tps=TRUE)
 interp.rast.2<-machisplin.mltps(int.values=tile$dat[[2]], covar.ras=tile$rast[[2]], tps=TRUE)
 interp.rast.3<-machisplin.mltps(int.values=tile$dat[[3]], covar.ras=tile$rast[[3]], tps=TRUE)
 interp.rast.4<-machisplin.mltps(int.values=tile$dat[[4]], covar.ras=tile$rast[[4]], tps=TRUE)
  
-# note that these rasters MUST be ordered to match the layout matching machisplin.tiles.id and MUST
+#plot tiled landscapes
+machisplin.tiles.id(tile)
+
+# note that these rasters MUST be ordered to match the layout matching machisplin.tiles.id (above) and MUST
 # be stored as shown below (with a space between stored raster (final.raster.name [[1]], and NOT as: final.raster.name[[1]]). 
 final.rast [[1]]<-interp.rast.1[[1]]$final
 final.rast [[2]]<-interp.rast.2[[1]]$final

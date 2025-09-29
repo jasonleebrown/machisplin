@@ -30,10 +30,10 @@ To explore the data format for input data, see:
 ```markdown
 library(raster)
 library(MACHISPLIN)
-##data format that will be interpolated, each column is a different dataset
+## data format that will be interpolated, each column is a different dataset
 Mydata<-sampling
 
-#rasters to use as high-resolution covariates for downscaling
+# rasters to use as high-resolution covariates for downscaling
 ALT = rast(system.file("extdata", "alt.tif", package="MACHISPLIN"))
 SLOPE = rast(system.file("extdata", "slope.tif", package="MACHISPLIN"))
 TWI = rast(system.file("extdata", "TWI.tif", package="MACHISPLIN"))

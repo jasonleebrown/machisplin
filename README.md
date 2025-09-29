@@ -183,7 +183,7 @@ interp.rast.2<-machisplin.mltps(int.values=tile$dat[[2]], covar.ras=tile$rast[[2
 interp.rast.3<-machisplin.mltps(int.values=tile$dat[[3]], covar.ras=tile$rast[[3]], tps=TRUE)
 interp.rast.4<-machisplin.mltps(int.values=tile$dat[[4]], covar.ras=tile$rast[[4]], tps=TRUE)
  
-#plot tiled landscapes
+# plot tiled landscapes
 machisplin.tiles.id(tile)
 
 # note that these rasters MUST be ordered to match the layout matching machisplin.tiles.id (above) and MUST

@@ -193,7 +193,6 @@ final.rast [[2]]<-interp.rast.2[[1]]$final
 final.rast [[3]]<-interp.rast.3[[1]]$final
 final.rast [[4]]<-interp.rast.4[[1]]$final
  
- 
 # n of iterpolations - subtrack x and y
 i.lyrs<-ncol(tile$dat)-2
 
@@ -229,13 +228,13 @@ These need to be a series of high-resolution raster combined into a raster stack
 ```markdown
 library(terra)
 
-##rasters to downscale (= make higher resolution), here they 'Tiff' rasters are in the base working directory
+## rasters to downscale (= make higher resolution), here they 'Tiff' rasters are in the base working directory
 BIO1 = rast("bio1.tif")
 BIO2 = rast("bio2.tif")
 BIO12 = rast("bio12.tif")
 BIO15= rast("bio15.tif")
 
-##high-resolution covariate rasters
+## high-resolution covariate rasters
 ALT = rast("SRTM30m.tif")
 SLOPE = rast("ln_slope.tif")
 TWI = rast("TWI.tif")
@@ -243,35 +242,35 @@ TWI = rast("TWI.tif")
 ```
 ### Clipping the extent of rasters in R
 ```markdown
-##create raster stack to speed process up 
+## create raster stack to speed process up 
 raster_interp_layers<-c(BIO1, BIO2, BIO12, BIO15)
 raster_covar_layers<-c(ALT, SLOPE, TWI)
 
-##define extent for which you will clip data to. These values will reflect the spatial area of analyses and the area where you will create high resolution variables.    
-##I highly recommend determining these values from a GIS (ArcGIS or Google Earth).
-##extent order input below is: xmin, xmax, ymin, yma
+## define extent for which you will clip data to. These values will reflect the spatial area of analyses and the area where you will create high resolution variables.    
+## I highly recommend determining these values from a GIS (ArcGIS or Google Earth).
+## extent order input below is: xmin, xmax, ymin, yma
 e.in <- terra::ext(-160, 10, 30, 60)
 
-##perform crop function to clip to input extent
+## perform crop function to clip to input extent
 interp_layers <- crop(raster_interp_layers, e.in)	
 covar_layers <- crop(raster_covar_layers, e.in)	
 ```
 
 ### Convert input 'rasters to be interpolated' to 'MACHISPLIN' format (continued from previous step)
 ```markdown
-##convert one of the rasters to a point dataframe to sample.  Use any raster input.
+## convert one of the rasters to a point dataframe to sample.  Use any raster input.
 env.points<-rasterToPoints(BIO1, fun=NULL, spatial=FALSE)
 
-##subset only the x and y data
+## subset only the x and y data
 env.points<- env.points[,1:2]
 
-##Extract values to points from rasters
+## Extract values to points from rasters
 RAST_VAL<-data.frame(extract(interp_layers, env.points))
 
-##merge sampled data to input
+## merge sampled data to input
 InInterp<-cbind(env.points,RAST_VAL)
 
-##save the file as '.csv' for future analyses 
+## save the file as '.csv' for future analyses 
 write.csv(Env1, file = "InInterp_v1.csv")
 ```
 

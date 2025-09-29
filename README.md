@@ -154,8 +154,9 @@ for (i in 1:i.lyrs){
    }
 ```
 
-###  Example 3 - tiling the input landscape/data to downscale very large landscapes
-a loop for difficult/large datasets
+###  Example 4 - tiling the input landscape/data to downscale very large landscapes
+a loop for very large datasets
+-important: downscaled tiled landscapes built in this manner are not guaranteed to use the same model
 ```markdown
 library(MACHISPLIN)
 library(terra)
@@ -173,16 +174,17 @@ TWI = terra::rast("TWI.tif")
 # function input: raster brick of covarites
 raster_stack<-terra::c(ALT,SLOPE,TWI,GEOMORPH, ASPECT)
 
-#sub-divide landscape into smaller units to facilite downscaling
+# sub-divide landscape into smaller units to facilite downscaling
 tile<-machisplin.tiles.create(rast.in= raster_stack, int.values=Mydata,out.ncol=2, out.nrow=2, feather.d=50)
  
-#run an ensemble machine learning thin plate spline - tile 1:4
+# run an ensemble machine learning thin plate spline - tile 1:4
 interp.rast.1<-machisplin.mltps(int.values=tile$dat[[1]], covar.ras=tile$rast[[1]], tps=TRUE)
 interp.rast.2<-machisplin.mltps(int.values=tile$dat[[2]], covar.ras=tile$rast[[2]], tps=TRUE)
 interp.rast.3<-machisplin.mltps(int.values=tile$dat[[3]], covar.ras=tile$rast[[3]], tps=TRUE)
 interp.rast.4<-machisplin.mltps(int.values=tile$dat[[4]], covar.ras=tile$rast[[4]], tps=TRUE)
  
-#note that these rasters MUST be ordered to match the layout matching machisplin.tiles.id and MUST be stored as shown below (with a space between stored raster (final.raster.name [[1]], and NOT as: final.raster.name[[1]]). 
+# note that these rasters MUST be ordered to match the layout matching machisplin.tiles.id and MUST
+# be stored as shown below (with a space between stored raster (final.raster.name [[1]], and NOT as: final.raster.name[[1]]). 
 final.rast [[1]]<-interp.rast.1[[1]]$final
 final.rast [[2]]<-interp.rast.2[[1]]$final
 final.rast [[3]]<-interp.rast.3[[1]]$final
